@@ -1,16 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Safari Stays - Experience Authentic African Safari Adventures</title>
 
-    <title>BoutiqueBNB</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    hello everyone here is our starting point for airbnb web app
-    #more to comes
-    <h1>good</h1>
-    <h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id soluta dolor eligendi ipsum ducimus deleniti dicta. Itaque adipisci, nesciunt ullam nisi quod quisquam, repudiandae, quae similique voluptate quibusdam hic recusandae!</h4>
+<body class="bg-bg-light text-[var(--text-dark)] font-sans">
+
+  <header class="bg-white shadow">
+    <div class="container mx-auto flex justify-between items-center p-4">
+      <h1 class="text-2xl font-bold">Safari Stays</h1>
+      <nav>
+        <ul class="flex space-x-4">
+          <li><a href="search.html" class="btn-secondary">Search</a></li>
+          <li><a href="booking.html" class="btn-secondary">My Bookings</a></li>
+          <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
+          <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
+          <li><a href="#messages" class="btn-secondary">Messages</a></li>
+          <li><a href="#profile" class="btn-secondary">Profile</a></li>
+          <li><a href="#login" class="btn-primary">Login / Sign Up</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="hero" class="**bg-cover** bg-center h-96 w-full" style="background-image: url('view.jpg');">
+    <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
+        <h2 class="text-white text-4xl font-bold">Experience African Safari</h2>
+    </div>
+</section>
+
+  <section id="search" class="container mx-auto **mt-[-4rem] mb-8** p-6 bg-white rounded-lg shadow-lg relative z-10">
+    <h3 class="text-xl font-bold mb-4">Discover unique safari lodges, camps, and accommodations across Africa.</h3>
+    <div class="flex flex-wrap gap-4">
+        <input type="text" placeholder="Where to?" class="border p-2 flex-1 rounded">
+        <input type="text" placeholder="Check in" class="border p-2 rounded">
+        <input type="text" placeholder="Check out" class="border p-2 rounded">
+        <input type="number" placeholder="Guests" class="border p-2 rounded w-20">
+        <button class="btn-primary">Search Safari Stays</button>
+    </div>
+</section>
+
+  <section id="featured" class="container mx-auto my-12">
+    <h3 class="text-2xl font-bold mb-6 text-center">Featured Safari Stays</h3>
+    <div class="members-container">
+      <!-- Card 1 -->
+      <div class="card">
+        <img src="lodge.jpg" alt="Luxury Safari Lodge">
+        <div class="p-4">
+          <h4 class="font-bold">Luxury Safari Lodge</h4>
+          <p>Serengeti, Tanzania</p>
+          <p>$450 / night</p>
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card">
+        <img src="tree.jpg" alt="Wilderness Tree Camp">
+        <div class="p-4">
+          <h4 class="font-bold">Wilderness Tree Camp</h4>
+          <p>Kruger, South Africa</p>
+          <p>$320 / night</p>
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <img src="villa.jpg" alt="Desert Safari Villa">
+        <div class="p-4">
+          <h4 class="font-bold">Desert Safari Villa</h4>
+          <p>Namib Desert, Namibia</p>
+          <p>$280 / night</p>
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card">
+        <img src="delta.jpg" alt="Riverside Safari Camp">
+        <div class="p-4">
+          <h4 class="font-bold">Riverside Safari Camp</h4>
+          <p>Okavango Delta, Botswana</p>
+          <p>$380 / night</p>
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <img src="mountainView.jpg" alt="Mountain View Lodge">
+        <div class="p-4">
+          <h4 class="font-bold">Mountain View Lodge</h4>
+          <p>Masai Mara, Kenya</p>
+          <p>$410 / night</p>
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card">
+        <img src="savanna.jpg" alt="Savanna Retreat">
+        <div class="p-4">
+          <h4 class="font-bold">Savanna Retreat</h4>
+          <p>Harare, Zimbabwe</p>
+          <p>$295 / night</p>
+          <button class="btn-secondary">View Details</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-brown text-white p-6 text-center">
+    <p class="font-bold text-lg">Safari Stays</p>
+    <p>Experience authentic African safari accommodations</p>
+    <p>Company | Support | Connect</p>
+    <p>&copy; 2025 Safari Stays. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>

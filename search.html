@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Safari Stays - Find Your Perfect Accommodation</title>
+    <meta name="description" content="Search and filter safari accommodations across Africa">
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+    <link rel="stylesheet" href="search.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root">
+        <header class="bg-white shadow">
+            <div class="container mx-auto flex justify-between items-center p-4">
+                <h1 class="text-2xl font-bold">Safari Stays</h1>
+                <nav>
+                    <ul class="flex space-x-4">
+                        <li><a href="#search" class="btn-secondary">Search</a></li>
+                        <li><a href="booking.html" class="btn-secondary">My Bookings</a></li>
+                        <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
+                        <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
+                        <li><a href="#messages" class="btn-secondary">Messages</a></li>
+                        <li><a href="#profile" class="btn-secondary">Profile</a></li>
+                        <li><a href="#login" class="btn-primary">Login / Sign Up</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <section id="search" class="container mx-auto my-8 p-4 bg-bg-light rounded-lg shadow">
+            <h3 class="text-xl font-bold">Safari Accommodations</h3>
+            <div class="flex my-4">
+                <div class="flex-1">
+                    <label for="price-range" class="block text-sm font-medium">Price Range</label>
+                    <input type="range" id="price-range" min="0" max="1000" class="w-full" />
+                </div>
+                <div class="flex-1 mx-2">
+                    <label for="property-type" class="block text-sm font-medium">Property Type</label>
+                    <select id="property-type" class="border p-2 rounded w-full">
+                        <option>All Types</option>
+                        <option>Luxury Lodge</option>
+                        <option>Tree Camp</option>
+                        <option>Desert Villa</option>
+                    </select>
+                </div>
+                <div class="flex-1">
+                    <label for="min-rating" class="block text-sm font-medium">Minimum Rating</label>
+                    <select id="min-rating" class="border p-2 rounded w-full">
+                        <option>Any</option>
+                        <option>4.0</option>
+                        <option>4.5</option>
+                        <option>5.0</option>
+                    </select>
+                </div>
+            </div>
+
+            <<div class="grid grid-flow-col auto-cols-max gap-6 overflow-x-auto p-6 justify-center bg-bg-light rounded-lg shadow-inner">
+
+
+
+                <div class="card">
+                    <img src="lodge.jpg" alt="Luxury Safari Lodge" />
+                    <div class="p-4">
+                        <h4 class="font-bold">Luxury Safari Lodge</h4>
+                        <p>Serengeti, Tanzania</p>
+                        <p>$450 / night</p>
+                        <button class="btn-secondary">View</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="tree.jpg" alt="Wilderness Tree Camp" />
+                    <div class="p-4">
+                        <h4 class="font-bold">Wilderness Tree Camp</h4>
+                        <p>Kruger, South Africa</p>
+                        <p>$320 / night</p>
+                        <button class="btn-secondary">View</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="villa.jpg" alt="Desert Safari Villa" />
+                    <div class="p-4">
+                        <h4 class="font-bold">Desert Safari Villa</h4>
+                        <p>Namib Desert, Namibia</p>
+                        <p>$280 / night</p>
+                        <button class="btn-secondary">View</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="savanna.jpg" alt="Riverside Safari Camp" />
+                    <div class="p-4">
+                        <h4 class="font-bold">Riverside Safari Camp</h4>
+                        <p>Okavango Delta, Botswana</p>
+                        <p>$380 / night</p>
+                        <button class="btn-secondary">View</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-brown text-white p-6 text-center">
+    <p class="font-bold text-lg">Safari Stays</p>
+    <p>Experience authentic African safari accommodations</p>
+    <p>Company | Support | Connect</p>
+    <p>&copy; 2025 Safari Stays. All rights reserved.</p>
+  </footer>
+    
+    <script type="text/babel" src="components/Footer.js"></script>
+    <script type="text/babel" src="search-app.js"></script>
+</body>
+</html>
