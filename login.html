@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Safari Stays</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto flex justify-between items-center p-4">
+            <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+            <a href="index.html" class="btn-secondary">Back to Home</a>
+        </div>
+    </header>
+
+    <!-- LOGIN CONTAINER -->
+    <section class="login-container">
+        <h2 class="text-2xl font-bold text-center mb-4 text-[var(--secondary-color)]">Welcome Back</h2>
+        <p class="text-center text-[var(--text-light)] mb-6">Login to continue your adventure</p>
+
+        <!-- Tabs -->
+        <div class="flex border-b mb-6">
+            <div id="bookerTab" class="tab-button tab-active" onclick="switchTab('booker')">Booker</div>
+            <div id="hostTab" class="tab-button" onclick="switchTab('host')">Host</div>
+        </div>
+
+        <!-- Booker Login Form -->
+        <form id="bookerForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" placeholder="you@example.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Password</label>
+                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <button type="submit" class="btn-primary w-full">Login as Booker</button>
+        </form>
+
+        <!-- Host Login Form -->
+        <form id="hostForm" class="space-y-4 hidden">
+            <div>
+                <label class="block text-sm font-medium">Host Email</label>
+                <input type="email" placeholder="host@safaristays.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Password</label>
+                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <button type="submit" class="btn-primary w-full">Login as Host</button>
+        </form>
+
+        <p class="text-center text-sm mt-4">
+            Don’t have an account? 
+            <a href="signup.html" class="text-[var(--primary-color)] font-semibold hover:underline">Sign up</a>
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brown text-white text-center p-4">
+        &copy; 2025 Safari Stays. All rights reserved.
+    </footer>
+
+    <script>
+        // Switch between tabs
+        function switchTab(role) {
+            const bookerTab = document.getElementById('bookerTab');
+            const hostTab = document.getElementById('hostTab');
+            const bookerForm = document.getElementById('bookerForm');
+            const hostForm = document.getElementById('hostForm');
+
+            if (role === 'booker') {
+                bookerTab.classList.add('tab-active');
+                hostTab.classList.remove('tab-active');
+                bookerForm.classList.remove('hidden');
+                hostForm.classList.add('hidden');
+            } else {
+                hostTab.classList.add('tab-active');
+                bookerTab.classList.remove('tab-active');
+                hostForm.classList.remove('hidden');
+                bookerForm.classList.add('hidden');
+            }
+        }
+
+        document.getElementById('bookerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = 'index.html'; // Redirect to Booker dashboard
+        });
+
+        document.getElementById('hostForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            window.location.href = 'booking.html'; // Redirect to Host dashboard
+        });
+    </script>
+</body>
+</html>
