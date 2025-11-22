@@ -24,8 +24,14 @@
 
         <!-- Tabs -->
         <div class="flex border-b mb-6">
-            <div id="bookerTab" class="tab-button tab-active" onclick="switchTab('booker')">Booker</div>
-            <div id="hostTab" class="tab-button" onclick="switchTab('host')">Host</div>
+            <div id="bookerTab" class="tab-button tab-active" onclick="switchTab('booker')">
+                <span>Guest</span>
+                <small class="block text-xs text-gray-500 mt-1">Book accommodations</small>
+            </div>
+            <div id="hostTab" class="tab-button" onclick="switchTab('host')">
+                <span>Host</span>
+                <small class="block text-xs text-gray-500 mt-1">List your property</small>
+            </div>
         </div>
 
         <!-- Booker Login Form -->
@@ -38,7 +44,7 @@
                 <label class="block text-sm font-medium">Password</label>
                 <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
             </div>
-            <button type="submit" class="btn-primary w-full">Login as Booker</button>
+            <button type="submit" class="btn-primary w-full">Login as Guest</button>
         </form>
 
         <!-- Host Login Form -->
@@ -65,7 +71,29 @@
         &copy; 2025 Safari Stays. All rights reserved.
     </footer>
 
+    <script src="api.js"></script>
     <script>
+        // Check server connection on page load
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Try to ping the server
+                const response = await fetch('http://localhost:3000/api/properties');
+                if (!response.ok && response.status !== 404) {
+                    console.warn('Server connection issue detected');
+                }
+            } catch (error) {
+                console.error('Cannot connect to server:', error);
+                // Show a helpful message if server is not running
+                const loginContainer = document.querySelector('.login-container');
+                if (loginContainer) {
+                    const warningDiv = document.createElement('div');
+                    warningDiv.className = 'bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4';
+                    warningDiv.innerHTML = '<strong>Note:</strong> Make sure the server is running on <code>http://localhost:3000</code>. Run <code>node server.js</code> in the terminal.';
+                    loginContainer.insertBefore(warningDiv, loginContainer.firstChild);
+                }
+            }
+        });
+
         // Switch between tabs
         function switchTab(role) {
             const bookerTab = document.getElementById('bookerTab');
@@ -86,14 +114,80 @@
             }
         }
 
-        document.getElementById('bookerForm').addEventListener('submit', function(e) {
+        document.getElementById('bookerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            window.location.href = 'index.html'; // Redirect to Booker dashboard
+            const form = this;
+            const emailInput = form.querySelector('input[type="email"]');
+            const passwordInput = form.querySelector('input[type="password"]');
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Basic validation
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            // Disable button during request
+            submitButton.disabled = true;
+            submitButton.textContent = 'Logging in...';
+            
+            try {
+                const result = await SafariStaysAPI.auth.login(email, password, 'booker');
+                if (result && result.token) {
+                    alert('Login successful! Welcome back!');
+                    window.location.href = 'index.html';
+                } else {
+                    throw new Error('Login failed: No token received');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                const errorMessage = error.message || 'Invalid email or password. Please try again.';
+                alert('Login failed: ' + errorMessage);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Login as Guest';
+                // Clear password field for security
+                passwordInput.value = '';
+            }
         });
 
-        document.getElementById('hostForm').addEventListener('submit', function(e) {
+        document.getElementById('hostForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            window.location.href = 'booking.html'; // Redirect to Host dashboard
+            const form = this;
+            const emailInput = form.querySelector('input[type="email"]');
+            const passwordInput = form.querySelector('input[type="password"]');
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Basic validation
+            if (!email || !password) {
+                alert('Please enter both email and password');
+                return;
+            }
+            
+            // Disable button during request
+            submitButton.disabled = true;
+            submitButton.textContent = 'Logging in...';
+            
+            try {
+                const result = await SafariStaysAPI.auth.login(email, password, 'host');
+                if (result && result.token) {
+                    alert('Login successful! Welcome back!');
+                    window.location.href = 'booking.html';
+                } else {
+                    throw new Error('Login failed: No token received');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                const errorMessage = error.message || 'Invalid email or password. Please try again.';
+                alert('Login failed: ' + errorMessage);
+                submitButton.disabled = false;
+                submitButton.textContent = 'Login as Host';
+                // Clear password field for security
+                passwordInput.value = '';
+            }
         });
     </script>
 </body>

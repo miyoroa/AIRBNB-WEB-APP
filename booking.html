@@ -3,35 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Your Booking - Safari Stays</title>
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <title>Host Dashboard - Safari Stays</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
     <link rel="stylesheet" href="booking.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body id="root">
     <header class="bg-white shadow">
         <div class="container mx-auto flex justify-between items-center p-4">
             <h1 class="text-2xl font-bold">Safari Stays</h1>
             <nav>
-                <ul class="flex space-x-4">
-                    <li><a href="index.html" class="btn-secondary">Host Dashboard</a></li>
+                <ul class="flex space-x-4 items-center">
+                    <li>
+                        <label for="currency-select-booking" class="text-sm font-medium mr-2">Currency:</label>
+                        <select id="currency-select-booking" class="border rounded p-1 text-sm" onchange="handleCurrencyChange(this.value)">
+                            <!-- Major African Currencies -->
+                            <option value="ZAR">ZAR (R) - South African Rand</option>
+                            <option value="KES">KES (KSh) - Kenyan Shilling</option>
+                            <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+                            <option value="BWP">BWP (P) - Botswana Pula</option>
+                            <option value="NAD">NAD (N$) - Namibian Dollar</option>
+                            <option value="ZWL">ZWL (Z$) - Zimbabwean Dollar</option>
+                            <option value="ZMW">ZMW (ZK) - Zambian Kwacha</option>
+                            <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+                            <option value="RWF">RWF (RF) - Rwandan Franc</option>
+                            <option value="ETB">ETB (Br) - Ethiopian Birr</option>
+                            <option value="EGP">EGP (E£) - Egyptian Pound</option>
+                            <option value="MAD">MAD - Moroccan Dirham</option>
+                            <option value="NGN">NGN (₦) - Nigerian Naira</option>
+                            <option value="GHS">GHS (GH₵) - Ghanaian Cedi</option>
+                            <option value="XOF">XOF (CFA) - West African CFA Franc</option>
+                            <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
+                            <option value="AOA">AOA (Kz) - Angolan Kwanza</option>
+                            <option value="MZN">MZN (MT) - Mozambican Metical</option>
+                            <option value="MWK">MWK (MK) - Malawian Kwacha</option>
+                            <!-- International Currencies -->
+                            <option value="USD">USD ($) - US Dollar</option>
+                            <option value="EUR">EUR (€) - Euro</option>
+                        </select>
+                    </li>
+                    <li><a href="index.html" class="btn-secondary">Home</a></li>
+                    <li><a href="search.html" class="btn-secondary">Search</a></li>
                     <li><a href="#my-bookings" class="btn-secondary">My Bookings</a></li>
                     <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
                     <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
                     <li><a href="#messages" class="btn-secondary">Messages</a></li>
                     <li><a href="#profile" class="btn-secondary">Profile</a></li>
-                    <li><a href="#login" class="btn-primary">Login / Sign Up</a></li>
+                    <li><a href="login.html" class="btn-primary">Login / Sign Up</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
     <section id="dashboard" class="container mx-auto my-8 p-4 bg-bg-light rounded-lg shadow">
-        <h3 class="text-xl font-bold">Host Dashboard</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 my-4">
+        <h3 class="text-xl font-bold mb-4">Host Dashboard</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-4">
             <div class="card p-4">
                 <h4 class="font-bold">Total Earnings</h4>
                 <p class="text-2xl">$45,600</p>
@@ -51,7 +77,7 @@
         </div>
 
         <h3 class="text-xl font-bold my-4">Your Properties</h3>
-        <div class="card p-4 flex justify-between items-center">
+        <div class="card p-4 flex justify-between items-center mb-4">
             <div>
                 <h4 class="font-bold">Luxury Safari Lodge</h4>
                 <p>Serengeti, Tanzania</p>
@@ -60,6 +86,11 @@
                 <button class="btn-secondary">Edit</button>
                 <button class="btn-danger">Delete</button>
             </div>
+        </div>
+
+        <h3 class="text-xl font-bold my-4">Recent Bookings</h3>
+        <div id="booking-list">
+            <!-- Bookings will be loaded here -->
         </div>
     </section>
 
@@ -70,7 +101,29 @@
         <p>&copy; 2025 Safari Stays. All rights reserved.</p>
     </footer>
     
-    <script type="text/babel" src="components/Footer.js"></script>
-    <script type="text/babel" src="booking-app.js"></script>
+    <script src="api.js"></script>
+    <script src="currency.js"></script>
+    <script src="booking-app.js"></script>
+    <script>
+        // Handle currency change
+        function handleCurrencyChange(currency) {
+            CurrencyConverter.setCurrentCurrency(currency);
+        }
+
+        // Set currency selector on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const currencySelect = document.getElementById('currency-select-booking');
+            if (currencySelect) {
+                currencySelect.value = CurrencyConverter.getCurrentCurrency();
+            }
+        });
+
+        // Listen for currency changes
+        window.addEventListener('currencyChanged', function() {
+            if (typeof loadBookings === 'function') {
+                loadBookings();
+            }
+        });
+    </script>
 </body>
 </html>

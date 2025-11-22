@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Safari Stays - Find Your Perfect Accommodation</title>
     <meta name="description" content="Search and filter safari accommodations across Africa">
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
     <link rel="stylesheet" href="search.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -19,37 +15,126 @@
             <div class="container mx-auto flex justify-between items-center p-4">
                 <h1 class="text-2xl font-bold">Safari Stays</h1>
                 <nav>
-                    <ul class="flex space-x-4">
+                    <ul class="flex space-x-4 items-center">
+                        <li>
+                            <label for="currency-select-search" class="text-sm font-medium mr-2">Currency:</label>
+                            <select id="currency-select-search" class="border rounded p-1 text-sm" onchange="handleCurrencyChange(this.value)">
+                                <!-- Major African Currencies -->
+                                <option value="ZAR">ZAR (R) - South African Rand</option>
+                                <option value="KES">KES (KSh) - Kenyan Shilling</option>
+                                <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+                                <option value="BWP">BWP (P) - Botswana Pula</option>
+                                <option value="NAD">NAD (N$) - Namibian Dollar</option>
+                                <option value="ZWL">ZWL (Z$) - Zimbabwean Dollar</option>
+                                <option value="ZMW">ZMW (ZK) - Zambian Kwacha</option>
+                                <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+                                <option value="RWF">RWF (RF) - Rwandan Franc</option>
+                                <option value="ETB">ETB (Br) - Ethiopian Birr</option>
+                                <option value="EGP">EGP (E£) - Egyptian Pound</option>
+                                <option value="MAD">MAD - Moroccan Dirham</option>
+                                <option value="NGN">NGN (₦) - Nigerian Naira</option>
+                                <option value="GHS">GHS (GH₵) - Ghanaian Cedi</option>
+                                <option value="XOF">XOF (CFA) - West African CFA Franc</option>
+                                <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
+                                <option value="AOA">AOA (Kz) - Angolan Kwanza</option>
+                                <option value="MZN">MZN (MT) - Mozambican Metical</option>
+                                <option value="MWK">MWK (MK) - Malawian Kwacha</option>
+                                <!-- International Currencies -->
+                                <option value="USD">USD ($) - US Dollar</option>
+                                <option value="EUR">EUR (€) - Euro</option>
+                            </select>
+                        </li>
                         <li><a href="#search" class="btn-secondary">Search</a></li>
                         <li><a href="booking.html" class="btn-secondary">My Bookings</a></li>
                         <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
                         <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
                         <li><a href="#messages" class="btn-secondary">Messages</a></li>
                         <li><a href="#profile" class="btn-secondary">Profile</a></li>
-                        <li><a href="#login" class="btn-primary">Login / Sign Up</a></li>
+                        <li><a href="login.html" class="btn-primary">Login / Sign Up</a></li>
                     </ul>
                 </nav>
             </div>
         </header>
 
         <section id="search" class="container mx-auto my-8 p-4 bg-bg-light rounded-lg shadow">
-            <h3 class="text-xl font-bold">Safari Accommodations</h3>
-            <div class="flex my-4">
-                <div class="flex-1">
-                    <label for="price-range" class="block text-sm font-medium">Price Range</label>
-                    <input type="range" id="price-range" min="0" max="1000" class="w-full" />
+            <h3 class="text-xl font-bold mb-4">Safari Accommodations</h3>
+            
+            <!-- Search Bar -->
+            <div class="flex flex-wrap gap-4 mb-6 p-4 bg-white rounded-lg">
+                <div class="flex-1 min-w-[200px]">
+                    <label for="search-location-input" class="block text-sm font-medium mb-1">Where to?</label>
+                    <input type="text" id="search-location-input" list="locations-list-search" placeholder="Search African destinations..." class="border p-2 w-full rounded">
+                    <datalist id="locations-list-search">
+                        <!-- African Safari Destinations -->
+                        <option value="Serengeti, Tanzania">Serengeti, Tanzania</option>
+                        <option value="Kruger National Park, South Africa">Kruger National Park, South Africa</option>
+                        <option value="Masai Mara, Kenya">Masai Mara, Kenya</option>
+                        <option value="Okavango Delta, Botswana">Okavango Delta, Botswana</option>
+                        <option value="Namib Desert, Namibia">Namib Desert, Namibia</option>
+                        <option value="Cape Town, South Africa">Cape Town, South Africa</option>
+                        <option value="Victoria Falls, Zambia">Victoria Falls, Zambia</option>
+                        <option value="Ngorongoro Crater, Tanzania">Ngorongoro Crater, Tanzania</option>
+                        <option value="Bwindi Impenetrable Forest, Uganda">Bwindi Impenetrable Forest, Uganda</option>
+                        <option value="Marrakech, Morocco">Marrakech, Morocco</option>
+                        <option value="Cairo, Egypt">Cairo, Egypt</option>
+                        <option value="Chobe National Park, Botswana">Chobe National Park, Botswana</option>
+                        <option value="Etosha National Park, Namibia">Etosha National Park, Namibia</option>
+                        <option value="Amboseli, Kenya">Amboseli, Kenya</option>
+                        <option value="Tsavo, Kenya">Tsavo, Kenya</option>
+                        <option value="Hwange National Park, Zimbabwe">Hwange National Park, Zimbabwe</option>
+                        <option value="Addis Ababa, Ethiopia">Addis Ababa, Ethiopia</option>
+                        <option value="Lalibela, Ethiopia">Lalibela, Ethiopia</option>
+                        <option value="Kigali, Rwanda">Kigali, Rwanda</option>
+                        <option value="Volcanoes National Park, Rwanda">Volcanoes National Park, Rwanda</option>
+                        <option value="Diani Beach, Kenya">Diani Beach, Kenya</option>
+                        <option value="Zanzibar, Tanzania">Zanzibar, Tanzania</option>
+                        <option value="Lamu, Kenya">Lamu, Kenya</option>
+                    </datalist>
                 </div>
-                <div class="flex-1 mx-2">
-                    <label for="property-type" class="block text-sm font-medium">Property Type</label>
+                <div class="min-w-[150px]">
+                    <label for="search-checkin-input" class="block text-sm font-medium mb-1">Check in</label>
+                    <input type="date" id="search-checkin-input" class="border p-2 w-full rounded">
+                </div>
+                <div class="min-w-[150px]">
+                    <label for="search-checkout-input" class="block text-sm font-medium mb-1">Check out</label>
+                    <input type="date" id="search-checkout-input" class="border p-2 w-full rounded">
+                </div>
+                <div class="min-w-[120px]">
+                    <label for="search-guests-input" class="block text-sm font-medium mb-1">Guests</label>
+                    <select id="search-guests-input" class="border p-2 w-full rounded">
+                        <option value="1">1 Guest</option>
+                        <option value="2" selected>2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5 Guests</option>
+                        <option value="6">6 Guests</option>
+                        <option value="7">7 Guests</option>
+                        <option value="8">8+ Guests</option>
+                    </select>
+                </div>
+                <div>
+                    <button class="btn-primary h-[42px]" onclick="performSearch()">Search</button>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap gap-4 my-4">
+                <div class="flex-1 min-w-[200px]">
+                    <label for="price-range" class="block text-sm font-medium mb-2">Price Range: $<span id="price-display">500</span></label>
+                    <input type="range" id="price-range" min="0" max="1000" value="500" class="w-full" />
+                </div>
+                <div class="flex-1 min-w-[200px]">
+                    <label for="property-type" class="block text-sm font-medium mb-2">Property Type</label>
                     <select id="property-type" class="border p-2 rounded w-full">
                         <option>All Types</option>
                         <option>Luxury Lodge</option>
                         <option>Tree Camp</option>
                         <option>Desert Villa</option>
+                        <option>Apartment</option>
                     </select>
                 </div>
-                <div class="flex-1">
-                    <label for="min-rating" class="block text-sm font-medium">Minimum Rating</label>
+                <div class="flex-1 min-w-[200px]">
+                    <label for="min-rating" class="block text-sm font-medium mb-2">Minimum Rating</label>
                     <select id="min-rating" class="border p-2 rounded w-full">
                         <option>Any</option>
                         <option>4.0</option>
@@ -59,46 +144,16 @@
                 </div>
             </div>
 
-            <<div class="grid grid-flow-col auto-cols-max gap-6 overflow-x-auto p-6 justify-center bg-bg-light rounded-lg shadow-inner">
-
-
-
-                <div class="card">
-                    <img src="lodge.jpg" alt="Luxury Safari Lodge" />
-                    <div class="p-4">
-                        <h4 class="font-bold">Luxury Safari Lodge</h4>
-                        <p>Serengeti, Tanzania</p>
-                        <p>$450 / night</p>
-                        <button class="btn-secondary">View</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="tree.jpg" alt="Wilderness Tree Camp" />
-                    <div class="p-4">
-                        <h4 class="font-bold">Wilderness Tree Camp</h4>
-                        <p>Kruger, South Africa</p>
-                        <p>$320 / night</p>
-                        <button class="btn-secondary">View</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="villa.jpg" alt="Desert Safari Villa" />
-                    <div class="p-4">
-                        <h4 class="font-bold">Desert Safari Villa</h4>
-                        <p>Namib Desert, Namibia</p>
-                        <p>$280 / night</p>
-                        <button class="btn-secondary">View</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <img src="savanna.jpg" alt="Riverside Safari Camp" />
-                    <div class="p-4">
-                        <h4 class="font-bold">Riverside Safari Camp</h4>
-                        <p>Okavango Delta, Botswana</p>
-                        <p>$380 / night</p>
-                        <button class="btn-secondary">View</button>
-                    </div>
-                </div>
+            <div id="search-results-header" class="mb-4 hidden">
+                <h3 class="text-xl font-bold" id="results-title">Search Results</h3>
+                <p class="text-gray-600" id="results-count"></p>
+            </div>
+            <div id="properties-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6 justify-center bg-bg-light rounded-lg shadow-inner">
+                <!-- Properties will be loaded dynamically -->
+            </div>
+            <div id="no-results" class="hidden text-center p-8">
+                <p class="text-gray-600 text-lg">No properties found matching your search criteria.</p>
+                <p class="text-gray-500 mt-2">Try adjusting your filters or search location.</p>
             </div>
         </section>
 
@@ -109,7 +164,29 @@
     <p>&copy; 2025 Safari Stays. All rights reserved.</p>
   </footer>
     
-    <script type="text/babel" src="components/Footer.js"></script>
-    <script type="text/babel" src="search-app.js"></script>
+    <script src="api.js"></script>
+    <script src="currency.js"></script>
+    <script src="search-app.js"></script>
+    <script>
+        // Handle currency change
+        function handleCurrencyChange(currency) {
+            CurrencyConverter.setCurrentCurrency(currency);
+        }
+
+        // Set currency selector on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const currencySelect = document.getElementById('currency-select-search');
+            if (currencySelect) {
+                currencySelect.value = CurrencyConverter.getCurrentCurrency();
+            }
+        });
+
+        // Listen for currency changes
+        window.addEventListener('currencyChanged', function() {
+            if (typeof filterProperties === 'function') {
+                filterProperties();
+            }
+        });
+    </script>
 </body>
 </html>

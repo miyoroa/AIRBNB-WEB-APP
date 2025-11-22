@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Safari Stays</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="bg-white shadow">
+        <div class="container mx-auto flex justify-between items-center p-4">
+            <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+            <a href="index.html" class="btn-secondary">Back to Home</a>
+        </div>
+    </header>
+
+    <!-- SIGNUP CONTAINER -->
+    <section class="login-container">
+        <h2 class="text-2xl font-bold text-center mb-4 text-[var(--secondary-color)]">Create Account</h2>
+        <p class="text-center text-[var(--text-light)] mb-6">Join Safari Stays and start your adventure</p>
+
+        <!-- Tabs -->
+        <div class="flex border-b mb-6">
+            <div id="bookerTab" class="tab-button tab-active" onclick="switchTab('booker')">
+                <span>Guest</span>
+                <small class="block text-xs text-gray-500 mt-1">Book accommodations</small>
+            </div>
+            <div id="hostTab" class="tab-button" onclick="switchTab('host')">
+                <span>Host</span>
+                <small class="block text-xs text-gray-500 mt-1">List your property</small>
+            </div>
+        </div>
+
+        <!-- Booker Signup Form -->
+        <form id="bookerForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">Full Name</label>
+                <input type="text" placeholder="John Doe" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" placeholder="you@example.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Password</label>
+                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required minlength="8">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Confirm Password</label>
+                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <button type="submit" class="btn-primary w-full">Sign Up as Guest</button>
+        </form>
+
+        <!-- Host Signup Form -->
+        <form id="hostForm" class="space-y-4 hidden">
+            <div>
+                <label class="block text-sm font-medium">Business Name</label>
+                <input type="text" placeholder="Safari Lodge Co." class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Contact Name</label>
+                <input type="text" placeholder="Jane Smith" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Email</label>
+                <input type="email" placeholder="host@safaristays.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Password</label>
+                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required minlength="8">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">Confirm Password</label>
+                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+            </div>
+            <button type="submit" class="btn-primary w-full">Sign Up as Host</button>
+        </form>
+
+        <p class="text-center text-sm mt-4">
+            Already have an account? 
+            <a href="login.html" class="text-[var(--primary-color)] font-semibold hover:underline">Login</a>
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-brown text-white text-center p-4">
+        &copy; 2025 Safari Stays. All rights reserved.
+    </footer>
+
+    <script src="api.js"></script>
+    <script>
+        // Switch between tabs
+        function switchTab(role) {
+            const bookerTab = document.getElementById('bookerTab');
+            const hostTab = document.getElementById('hostTab');
+            const bookerForm = document.getElementById('bookerForm');
+            const hostForm = document.getElementById('hostForm');
+
+            if (role === 'booker') {
+                bookerTab.classList.add('tab-active');
+                hostTab.classList.remove('tab-active');
+                bookerForm.classList.remove('hidden');
+                hostForm.classList.add('hidden');
+            } else {
+                hostTab.classList.add('tab-active');
+                bookerTab.classList.remove('tab-active');
+                hostForm.classList.remove('hidden');
+                bookerForm.classList.add('hidden');
+            }
+        }
+
+        // Password confirmation validation
+        document.getElementById('bookerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = this;
+            const name = form.querySelector('input[type="text"]').value.trim();
+            const email = form.querySelector('input[type="email"]').value.trim();
+            const password = form.querySelector('input[type="password"]').value;
+            const confirmPassword = form.querySelectorAll('input[type="password"]')[1].value;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Validation
+            if (!name || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Disable button during request
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating account...';
+            
+            try {
+                await SafariStaysAPI.auth.register({ name, email, password, role: 'booker' });
+                alert('Account created successfully! Redirecting to login...');
+                window.location.href = 'login.html';
+            } catch (error) {
+                alert('Registration failed: ' + (error.message || 'An error occurred. Please try again.'));
+                submitButton.disabled = false;
+                submitButton.textContent = 'Sign Up as Guest';
+            }
+        });
+
+        document.getElementById('hostForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const form = this;
+            const businessName = form.querySelectorAll('input[type="text"]')[0].value.trim();
+            const contactName = form.querySelectorAll('input[type="text"]')[1].value.trim();
+            const email = form.querySelector('input[type="email"]').value.trim();
+            const password = form.querySelector('input[type="password"]').value;
+            const confirmPassword = form.querySelectorAll('input[type="password"]')[1].value;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Validation
+            if (!businessName || !contactName || !email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Disable button during request
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating account...';
+            
+            try {
+                await SafariStaysAPI.auth.register({ 
+                    name: contactName, 
+                    email, 
+                    password, 
+                    role: 'host',
+                    businessName 
+                });
+                alert('Host account created successfully! Redirecting to login...');
+                window.location.href = 'login.html';
+            } catch (error) {
+                alert('Registration failed: ' + (error.message || 'An error occurred. Please try again.'));
+                submitButton.disabled = false;
+                submitButton.textContent = 'Sign Up as Host';
+            }
+        });
+    </script>
+</body>
+</html>
+

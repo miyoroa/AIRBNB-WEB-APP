@@ -14,104 +14,117 @@
     <div class="container mx-auto flex justify-between items-center p-4">
       <h1 class="text-2xl font-bold">Safari Stays</h1>
       <nav>
-        <ul class="flex space-x-4">
+        <ul class="flex space-x-4 items-center">
+          <li>
+            <label for="currency-select-home" class="text-sm font-medium mr-2">Currency:</label>
+            <select id="currency-select-home" class="border rounded p-1 text-sm" onchange="handleCurrencyChange(this.value)">
+              <!-- Major African Currencies -->
+              <option value="ZAR">ZAR (R) - South African Rand</option>
+              <option value="KES">KES (KSh) - Kenyan Shilling</option>
+              <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+              <option value="BWP">BWP (P) - Botswana Pula</option>
+              <option value="NAD">NAD (N$) - Namibian Dollar</option>
+              <option value="ZWL">ZWL (Z$) - Zimbabwean Dollar</option>
+              <option value="ZMW">ZMW (ZK) - Zambian Kwacha</option>
+              <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+              <option value="RWF">RWF (RF) - Rwandan Franc</option>
+              <option value="ETB">ETB (Br) - Ethiopian Birr</option>
+              <option value="EGP">EGP (E£) - Egyptian Pound</option>
+              <option value="MAD">MAD - Moroccan Dirham</option>
+              <option value="NGN">NGN (₦) - Nigerian Naira</option>
+              <option value="GHS">GHS (GH₵) - Ghanaian Cedi</option>
+              <option value="XOF">XOF (CFA) - West African CFA Franc</option>
+              <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
+              <option value="AOA">AOA (Kz) - Angolan Kwanza</option>
+              <option value="MZN">MZN (MT) - Mozambican Metical</option>
+              <option value="MWK">MWK (MK) - Malawian Kwacha</option>
+              <!-- International Currencies -->
+              <option value="USD">USD ($) - US Dollar</option>
+              <option value="EUR">EUR (€) - Euro</option>
+            </select>
+          </li>
           <li><a href="search.html" class="btn-secondary">Search</a></li>
           <li><a href="booking.html" class="btn-secondary">My Bookings</a></li>
           <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
           <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
           <li><a href="#messages" class="btn-secondary">Messages</a></li>
           <li><a href="#profile" class="btn-secondary">Profile</a></li>
-          <li><a href="#login" class="btn-primary">Login / Sign Up</a></li>
+          <li><a href="login.html" class="btn-primary">Login / Sign Up</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <section id="hero" class="**bg-cover** bg-center h-96 w-full" style="background-image: url('view.jpg');">
+  <section id="hero" class="bg-cover bg-center h-96 w-full" style="background-image: url('view.jpg');">
     <div class="flex items-center justify-center h-full bg-black bg-opacity-50">
         <h2 class="text-white text-4xl font-bold">Experience African Safari</h2>
     </div>
 </section>
 
-  <section id="search" class="container mx-auto **mt-[-4rem] mb-8** p-6 bg-white rounded-lg shadow-lg relative z-10">
+  <section id="search" class="container mx-auto -mt-16 mb-8 p-6 bg-white rounded-lg shadow-lg relative z-10">
     <h3 class="text-xl font-bold mb-4">Discover unique safari lodges, camps, and accommodations across Africa.</h3>
-    <div class="flex flex-wrap gap-4">
-        <input type="text" placeholder="Where to?" class="border p-2 flex-1 rounded">
-        <input type="text" placeholder="Check in" class="border p-2 rounded">
-        <input type="text" placeholder="Check out" class="border p-2 rounded">
-        <input type="number" placeholder="Guests" class="border p-2 rounded w-20">
-        <button class="btn-primary">Search Safari Stays</button>
+    <div class="flex flex-wrap gap-4 items-end">
+        <div class="flex-1 min-w-[200px]">
+            <label for="search-location" class="block text-sm font-medium mb-1">Where to?</label>
+            <input type="text" id="search-location" list="locations-list" placeholder="Search destinations..." class="border p-2 w-full rounded">
+            <datalist id="locations-list">
+                <!-- African Safari Destinations -->
+                <option value="Serengeti, Tanzania">Serengeti, Tanzania</option>
+                <option value="Kruger National Park, South Africa">Kruger National Park, South Africa</option>
+                <option value="Masai Mara, Kenya">Masai Mara, Kenya</option>
+                <option value="Okavango Delta, Botswana">Okavango Delta, Botswana</option>
+                <option value="Namib Desert, Namibia">Namib Desert, Namibia</option>
+                <option value="Cape Town, South Africa">Cape Town, South Africa</option>
+                <option value="Victoria Falls, Zambia">Victoria Falls, Zambia</option>
+                <option value="Ngorongoro Crater, Tanzania">Ngorongoro Crater, Tanzania</option>
+                <option value="Bwindi Impenetrable Forest, Uganda">Bwindi Impenetrable Forest, Uganda</option>
+                <option value="Marrakech, Morocco">Marrakech, Morocco</option>
+                <option value="Cairo, Egypt">Cairo, Egypt</option>
+                <option value="Chobe National Park, Botswana">Chobe National Park, Botswana</option>
+                <option value="Etosha National Park, Namibia">Etosha National Park, Namibia</option>
+                <option value="Amboseli, Kenya">Amboseli, Kenya</option>
+                <option value="Tsavo, Kenya">Tsavo, Kenya</option>
+                <option value="Hwange National Park, Zimbabwe">Hwange National Park, Zimbabwe</option>
+                <option value="Addis Ababa, Ethiopia">Addis Ababa, Ethiopia</option>
+                <option value="Lalibela, Ethiopia">Lalibela, Ethiopia</option>
+                <option value="Kigali, Rwanda">Kigali, Rwanda</option>
+                <option value="Volcanoes National Park, Rwanda">Volcanoes National Park, Rwanda</option>
+                <option value="Diani Beach, Kenya">Diani Beach, Kenya</option>
+                <option value="Zanzibar, Tanzania">Zanzibar, Tanzania</option>
+                <option value="Lamu, Kenya">Lamu, Kenya</option>
+            </datalist>
+        </div>
+        <div class="min-w-[150px]">
+            <label for="search-checkin" class="block text-sm font-medium mb-1">Check in</label>
+            <input type="date" id="search-checkin" class="border p-2 w-full rounded">
+        </div>
+        <div class="min-w-[150px]">
+            <label for="search-checkout" class="block text-sm font-medium mb-1">Check out</label>
+            <input type="date" id="search-checkout" class="border p-2 w-full rounded">
+        </div>
+        <div class="min-w-[120px]">
+            <label for="search-guests" class="block text-sm font-medium mb-1">Guests</label>
+            <select id="search-guests" class="border p-2 w-full rounded">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+                <option value="6">6 Guests</option>
+                <option value="7">7 Guests</option>
+                <option value="8">8+ Guests</option>
+            </select>
+        </div>
+        <div>
+            <button class="btn-primary h-[42px]" onclick="performSearch()">Search</button>
+        </div>
     </div>
 </section>
 
   <section id="featured" class="container mx-auto my-12">
     <h3 class="text-2xl font-bold mb-6 text-center">Featured Safari Stays</h3>
-    <div class="members-container">
-      <!-- Card 1 -->
-      <div class="card">
-        <img src="lodge.jpg" alt="Luxury Safari Lodge">
-        <div class="p-4">
-          <h4 class="font-bold">Luxury Safari Lodge</h4>
-          <p>Serengeti, Tanzania</p>
-          <p>$450 / night</p>
-          <button class="btn-secondary">View Details</button>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="card">
-        <img src="tree.jpg" alt="Wilderness Tree Camp">
-        <div class="p-4">
-          <h4 class="font-bold">Wilderness Tree Camp</h4>
-          <p>Kruger, South Africa</p>
-          <p>$320 / night</p>
-          <button class="btn-secondary">View Details</button>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="card">
-        <img src="villa.jpg" alt="Desert Safari Villa">
-        <div class="p-4">
-          <h4 class="font-bold">Desert Safari Villa</h4>
-          <p>Namib Desert, Namibia</p>
-          <p>$280 / night</p>
-          <button class="btn-secondary">View Details</button>
-        </div>
-      </div>
-
-      <!-- Card 4 -->
-      <div class="card">
-        <img src="delta.jpg" alt="Riverside Safari Camp">
-        <div class="p-4">
-          <h4 class="font-bold">Riverside Safari Camp</h4>
-          <p>Okavango Delta, Botswana</p>
-          <p>$380 / night</p>
-          <button class="btn-secondary">View Details</button>
-        </div>
-      </div>
-
-      <!-- Card 5 -->
-      <div class="card">
-        <img src="mountainView.jpg" alt="Mountain View Lodge">
-        <div class="p-4">
-          <h4 class="font-bold">Mountain View Lodge</h4>
-          <p>Masai Mara, Kenya</p>
-          <p>$410 / night</p>
-          <button class="btn-secondary">View Details</button>
-        </div>
-      </div>
-
-      <!-- Card 6 -->
-      <div class="card">
-        <img src="savanna.jpg" alt="Savanna Retreat">
-        <div class="p-4">
-          <h4 class="font-bold">Savanna Retreat</h4>
-          <p>Harare, Zimbabwe</p>
-          <p>$295 / night</p>
-          <button class="btn-secondary">View Details</button>
-        </div>
-      </div>
+    <div id="properties-container" class="members-container">
+      <!-- Properties will be loaded dynamically -->
     </div>
   </section>
 
@@ -121,6 +134,207 @@
     <p>Company | Support | Connect</p>
     <p>&copy; 2025 Safari Stays. All rights reserved.</p>
   </footer>
+
+    <script src="api.js"></script>
+    <script src="currency.js"></script>
+    <script>
+    // Handle currency change
+    function handleCurrencyChange(currency) {
+      CurrencyConverter.setCurrentCurrency(currency);
+      // Reload properties to update prices
+      if (typeof loadAndDisplayProperties === 'function') {
+        loadAndDisplayProperties();
+      }
+    }
+
+    // Set minimum date to today for search inputs
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Set currency selector value
+      const currencySelect = document.getElementById('currency-select-home');
+      if (currencySelect) {
+        currencySelect.value = CurrencyConverter.getCurrentCurrency();
+      }
+
+      // Listen for currency changes
+      window.addEventListener('currencyChanged', function() {
+        if (typeof loadAndDisplayProperties === 'function') {
+          loadAndDisplayProperties();
+        }
+      });
+      const today = new Date().toISOString().split('T')[0];
+      const checkin = document.getElementById('search-checkin');
+      const checkout = document.getElementById('search-checkout');
+      
+      if (checkin) {
+        checkin.min = today;
+        checkin.addEventListener('change', function() {
+          if (checkout) checkout.min = this.value;
+        });
+      }
+      if (checkout) checkout.min = today;
+
+      // Load properties from API and display
+      await loadAndDisplayProperties();
+    });
+
+    async function loadAndDisplayProperties() {
+      const container = document.getElementById('properties-container');
+      if (!container) return;
+
+      // Featured African properties (fallback)
+      const originalProperties = [
+        { id: 1, name: 'Luxury Safari Lodge', location: 'Serengeti, Tanzania', price: 450, image: 'lodge.jpg', hostName: 'Safari Adventures Co.', rating: 4.8 },
+        { id: 3, name: 'Wilderness Tree Camp', location: 'Kruger National Park, South Africa', price: 320, image: 'tree.jpg', hostName: 'Wilderness Escapes', rating: 4.5 },
+        { id: 5, name: 'Mountain View Lodge', location: 'Masai Mara, Kenya', price: 410, image: 'mountainView.jpg', hostName: 'Mountain Retreats', rating: 4.7 },
+        { id: 7, name: 'Riverside Safari Camp', location: 'Okavango Delta, Botswana', price: 380, image: 'delta.jpg', hostName: 'Delta Experiences', rating: 4.9 },
+        { id: 9, name: 'Desert Safari Villa', location: 'Namib Desert, Namibia', price: 280, image: 'villa.jpg', hostName: 'Desert Dreams', rating: 4.2 },
+        { id: 11, name: 'Cape Town Waterfront Apartment', location: 'Cape Town, South Africa', price: 150, image: 'lodge.jpg', hostName: 'Cape Town Stays', rating: 4.8 }
+      ];
+
+      try {
+        const properties = await SafariStaysAPI.properties.getAll();
+        // Use API properties if available, otherwise use fallback
+        const displayProperties = properties.length > 0 ? properties.slice(0, 6) : originalProperties;
+        
+        container.innerHTML = displayProperties.map(property => {
+          const rating = property.rating || 0;
+          const reviewCount = property.reviews?.length || 0;
+          const hostName = property.hostName || 'Host';
+          const propertyType = property.type || 'Luxury Lodge';
+          
+          return `
+            <div class="card">
+              <img src="${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;">
+              <div class="p-4">
+                <div class="flex items-center justify-between mb-2">
+                  <h4 class="font-bold text-lg">${property.name}</h4>
+                  <div class="flex items-center">
+                    <span class="text-yellow-500">★</span>
+                    <span class="ml-1 font-semibold">${rating.toFixed(1)}</span>
+                  </div>
+                </div>
+                <p class="text-gray-600 text-sm mb-1">${property.location}</p>
+                <p class="text-sm font-medium text-[var(--primary-color)] mb-1">
+                  <span class="px-2 py-1 bg-gray-100 rounded-full">${propertyType}</span>
+                </p>
+                <p class="text-sm text-gray-500 mb-2">Hosted by <span class="font-semibold">${hostName}</span></p>
+                <p class="text-lg font-bold text-[var(--primary-color)] mb-2">${CurrencyConverter.formatDisplay(property.price)} / night</p>
+                ${reviewCount > 0 ? `<p class="text-xs text-gray-500 mb-2">${reviewCount} review${reviewCount > 1 ? 's' : ''}</p>` : ''}
+                <button class="btn-secondary w-full" onclick="viewPropertyDetailsById(${property.id})">View Details</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Error loading properties:', error);
+        // Fallback to original static properties
+        container.innerHTML = originalProperties.map(property => {
+          const propertyType = property.type || 'Luxury Lodge';
+          return `
+          <div class="card">
+            <img src="${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;">
+            <div class="p-4">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-bold text-lg">${property.name}</h4>
+                <div class="flex items-center">
+                  <span class="text-yellow-500">★</span>
+                  <span class="ml-1 font-semibold">${property.rating.toFixed(1)}</span>
+                </div>
+              </div>
+              <p class="text-gray-600 text-sm mb-1">${property.location}</p>
+              <p class="text-sm font-medium text-[var(--primary-color)] mb-1">
+                <span class="px-2 py-1 bg-gray-100 rounded-full">${propertyType}</span>
+              </p>
+              <p class="text-sm text-gray-500 mb-2">Hosted by <span class="font-semibold">${property.hostName}</span></p>
+                <p class="text-lg font-bold text-[var(--primary-color)] mb-2">${CurrencyConverter.formatDisplay(property.price)} / night</p>
+              <button class="btn-secondary w-full" onclick="viewPropertyDetailsById(${property.id})">View Details</button>
+            </div>
+          </div>
+        `;
+        }).join('');
+      }
+    }
+
+    // Search functionality
+    function performSearch() {
+      const location = document.getElementById('search-location').value;
+      const checkin = document.getElementById('search-checkin').value;
+      const checkout = document.getElementById('search-checkout').value;
+      const guests = document.getElementById('search-guests').value;
+
+      // Store search parameters
+      sessionStorage.setItem('searchParams', JSON.stringify({
+        location: location,
+        checkin: checkin,
+        checkout: checkout,
+        guests: guests
+      }));
+
+      // Redirect to search page
+      window.location.href = 'search.html';
+    }
+
+    // View property details by ID
+    async function viewPropertyDetailsById(propertyId) {
+      if (!propertyId) {
+        console.error('No property ID provided');
+        alert('Error: Property ID not found. Please try again.');
+        return;
+      }
+      
+      try {
+        const property = await SafariStaysAPI.properties.getById(propertyId);
+        sessionStorage.setItem('selectedProperty', JSON.stringify({
+          id: property.id,
+          title: property.name,
+          location: property.location,
+          price: property.price
+        }));
+        window.location.href = 'property-detail.html';
+      } catch (error) {
+        console.error('Error loading property:', error);
+        
+        // Fallback: try to get from all properties
+        try {
+          const allProperties = await SafariStaysAPI.properties.getAll();
+          const property = allProperties.find(p => p.id === parseInt(propertyId) || p.id === propertyId);
+          
+          if (property) {
+            sessionStorage.setItem('selectedProperty', JSON.stringify({
+              id: property.id,
+              title: property.name,
+              location: property.location,
+              price: property.price
+            }));
+            window.location.href = 'property-detail.html';
+            return;
+          }
+        } catch (searchError) {
+          console.error('Error searching properties:', searchError);
+        }
+        
+        alert('Error loading property details. Please make sure the server is running on http://localhost:3000');
+      }
+    }
+
+    // Legacy function for backward compatibility
+    function viewPropertyDetails(propertyName) {
+      // Try to find property by name
+      SafariStaysAPI.properties.getAll().then(properties => {
+        const property = properties.find(p => p.name === propertyName);
+        if (property) {
+          viewPropertyDetailsById(property.id);
+        } else {
+          sessionStorage.setItem('selectedProperty', JSON.stringify({
+            title: propertyName,
+            location: '',
+            price: ''
+          }));
+          window.location.href = 'property-detail.html';
+        }
+      });
+    }
+  </script>
 
 </body>
 </html>
