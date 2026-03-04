@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - Safari Stays</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-bg-light">
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+                
+                <nav class="hidden lg:flex w-full lg:w-auto">
+                    <ul class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-3 w-full lg:w-auto">
+                        <li class="flex lg:contents">
+                            <a href="index.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Home</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="search.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Search</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="booking.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">My Bookings</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="wishlist.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap bg-[var(--primary-color)] text-white">Wishlist</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="become-host.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Become a Host</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="messages.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Messages</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="profile.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Profile</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="login.html" class="btn-primary text-center py-2 px-4 whitespace-nowrap">Login / Sign Up</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto my-8 p-4">
+        <h2 class="text-3xl font-bold mb-6">My Wishlist</h2>
+        
+        <div id="wishlist-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Wishlist items will be loaded here -->
+        </div>
+        
+        <div id="empty-wishlist" class="hidden text-center py-12">
+            <p class="text-xl text-gray-600 mb-4">Your wishlist is empty</p>
+            <p class="text-gray-500 mb-6">Start exploring and save your favorite properties!</p>
+            <a href="search.html" class="btn-primary inline-block">Browse Properties</a>
+        </div>
+    </main>
+
+    <footer class="bg-brown text-white p-6 text-center mt-8">
+        <p class="font-bold text-lg">Safari Stays</p>
+        <p>Experience authentic African safari accommodations</p>
+        <p>&copy; 2025 Safari Stays. All rights reserved.</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script src="currency.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadWishlist();
+        });
+
+        async function loadWishlist() {
+            const container = document.getElementById('wishlist-container');
+            const emptyState = document.getElementById('empty-wishlist');
+            
+            // Get wishlist from localStorage
+            const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            
+            if (wishlist.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+            
+            container.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            
+            try {
+                // Load property details for each wishlist item
+                const properties = await Promise.all(
+                    wishlist.map(id => SafariStaysAPI.properties.getById(id).catch(() => null))
+                );
+                
+                const validProperties = properties.filter(p => p !== null);
+                
+                if (validProperties.length === 0) {
+                    container.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                    return;
+                }
+                
+                container.innerHTML = validProperties.map(property => {
+                    const rating = property.rating || 0;
+                    const reviewCount = property.reviews?.length || 0;
+                    
+                    return `
+                        <div class="card">
+                            <img src="/${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;" onerror="this.src='/images/lodge.jpg'; this.onerror=null;">
+                            <div class="p-4">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="font-bold text-lg">${property.name}</h4>
+                                    <button onclick="removeFromWishlist(${property.id})" class="text-red-500 hover:text-red-700 text-xl" title="Remove from wishlist">×</button>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-1">${property.location}</p>
+                                <p class="text-sm font-medium text-[var(--primary-color)] mb-1">
+                                    <span class="px-2 py-1 bg-gray-100 rounded-full">${property.type}</span>
+                                </p>
+                                <div class="flex items-center mb-2">
+                                    <span class="text-yellow-500">★</span>
+                                    <span class="ml-1 font-semibold">${rating.toFixed(1)}</span>
+                                    ${reviewCount > 0 ? `<span class="ml-2 text-xs text-gray-500">(${reviewCount} reviews)</span>` : ''}
+                                </div>
+                                <p class="text-lg font-bold text-[var(--primary-color)] mb-2">${CurrencyConverter.formatDisplay(property.price)} / night</p>
+                                <div class="flex gap-2">
+                                    <button onclick="viewProperty(${property.id})" class="btn-secondary flex-1">View Details</button>
+                                    <button onclick="bookNow(${property.id})" class="btn-primary flex-1">Book Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading wishlist:', error);
+                container.innerHTML = '<p class="text-center p-4 text-red-600">Error loading wishlist</p>';
+            }
+        }
+
+        function removeFromWishlist(propertyId) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            wishlist = wishlist.filter(id => id !== propertyId);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            loadWishlist();
+        }
+
+        function viewProperty(id) {
+            SafariStaysAPI.properties.getById(id).then(property => {
+                sessionStorage.setItem('selectedProperty', JSON.stringify(property));
+                window.location.href = 'property-detail.html';
+            });
+        }
+
+        function bookNow(id) {
+            SafariStaysAPI.properties.getById(id).then(property => {
+                sessionStorage.setItem('selectedProperty', JSON.stringify(property));
+                window.location.href = 'property-detail.html';
+            });
+        }
+
+        // Add to wishlist function (can be called from other pages)
+        window.addToWishlist = function(propertyId) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            if (!wishlist.includes(propertyId)) {
+                wishlist.push(propertyId);
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert('Added to wishlist!');
+            } else {
+                alert('Already in wishlist!');
+            }
+        };
+    </script>
+</body>
+</html>
+

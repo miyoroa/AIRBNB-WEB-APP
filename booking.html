@@ -9,92 +9,220 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body id="root">
-    <header class="bg-white shadow">
-        <div class="container mx-auto flex justify-between items-center p-4">
-            <h1 class="text-2xl font-bold">Safari Stays</h1>
-            <nav>
-                <ul class="flex space-x-4 items-center">
-                    <li>
-                        <label for="currency-select-booking" class="text-sm font-medium mr-2">Currency:</label>
-                        <select id="currency-select-booking" class="border rounded p-1 text-sm" onchange="handleCurrencyChange(this.value)">
-                            <!-- Major African Currencies -->
-                            <option value="ZAR">ZAR (R) - South African Rand</option>
-                            <option value="KES">KES (KSh) - Kenyan Shilling</option>
-                            <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
-                            <option value="BWP">BWP (P) - Botswana Pula</option>
-                            <option value="NAD">NAD (N$) - Namibian Dollar</option>
-                            <option value="ZWL">ZWL (Z$) - Zimbabwean Dollar</option>
-                            <option value="ZMW">ZMW (ZK) - Zambian Kwacha</option>
-                            <option value="UGX">UGX (USh) - Ugandan Shilling</option>
-                            <option value="RWF">RWF (RF) - Rwandan Franc</option>
-                            <option value="ETB">ETB (Br) - Ethiopian Birr</option>
-                            <option value="EGP">EGP (E£) - Egyptian Pound</option>
-                            <option value="MAD">MAD - Moroccan Dirham</option>
-                            <option value="NGN">NGN (₦) - Nigerian Naira</option>
-                            <option value="GHS">GHS (GH₵) - Ghanaian Cedi</option>
-                            <option value="XOF">XOF (CFA) - West African CFA Franc</option>
-                            <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
-                            <option value="AOA">AOA (Kz) - Angolan Kwanza</option>
-                            <option value="MZN">MZN (MT) - Mozambican Metical</option>
-                            <option value="MWK">MWK (MK) - Malawian Kwacha</option>
-                            <!-- International Currencies -->
-                            <option value="USD">USD ($) - US Dollar</option>
-                            <option value="EUR">EUR (€) - Euro</option>
-                        </select>
-                    </li>
-                    <li><a href="index.html" class="btn-secondary">Home</a></li>
-                    <li><a href="search.html" class="btn-secondary">Search</a></li>
-                    <li><a href="#my-bookings" class="btn-secondary">My Bookings</a></li>
-                    <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
-                    <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
-                    <li><a href="#messages" class="btn-secondary">Messages</a></li>
-                    <li><a href="#profile" class="btn-secondary">Profile</a></li>
-                    <li><a href="login.html" class="btn-primary">Login / Sign Up</a></li>
-                </ul>
-            </nav>
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+                
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-toggle" class="lg:hidden p-2 rounded-md border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+                
+                <nav id="main-nav" class="hidden lg:flex w-full lg:w-auto">
+                    <ul class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-3 w-full lg:w-auto">
+                        <!-- Currency Selector -->
+                        <li class="flex items-center justify-center lg:justify-start">
+                            <label for="currency-select-booking" class="text-sm font-medium mr-2 whitespace-nowrap">Currency:</label>
+                            <select id="currency-select-booking" class="border rounded p-1.5 text-sm min-w-[150px]" onchange="handleCurrencyChange(this.value)">
+                                <!-- Major African Currencies -->
+                                <option value="ZAR">ZAR (R) - South African Rand</option>
+                                <option value="KES">KES (KSh) - Kenyan Shilling</option>
+                                <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+                                <option value="BWP">BWP (P) - Botswana Pula</option>
+                                <option value="NAD">NAD (N$) - Namibian Dollar</option>
+                                <option value="ZWL">ZWL (Z$) - Zimbabwean Dollar</option>
+                                <option value="ZMW">ZMW (ZK) - Zambian Kwacha</option>
+                                <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+                                <option value="RWF">RWF (RF) - Rwandan Franc</option>
+                                <option value="ETB">ETB (Br) - Ethiopian Birr</option>
+                                <option value="EGP">EGP (E£) - Egyptian Pound</option>
+                                <option value="MAD">MAD - Moroccan Dirham</option>
+                                <option value="NGN">NGN (₦) - Nigerian Naira</option>
+                                <option value="GHS">GHS (GH₵) - Ghanaian Cedi</option>
+                                <option value="XOF">XOF (CFA) - West African CFA Franc</option>
+                                <option value="XAF">XAF (FCFA) - Central African CFA Franc</option>
+                                <option value="AOA">AOA (Kz) - Angolan Kwanza</option>
+                                <option value="MZN">MZN (MT) - Mozambican Metical</option>
+                                <option value="MWK">MWK (MK) - Malawian Kwacha</option>
+                                <!-- International Currencies -->
+                                <option value="USD">USD ($) - US Dollar</option>
+                                <option value="EUR">EUR (€) - Euro</option>
+                            </select>
+                        </li>
+                        
+                        <!-- Navigation Links - Grouped -->
+                        <li class="flex lg:contents">
+                            <a href="index.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Home</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="search.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Search</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="booking.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap bg-[var(--primary-color)] text-white">My Bookings</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="wishlist.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Wishlist</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="become-host.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Become a Host</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="messages.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Messages</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="profile.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Profile</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="login.html" class="btn-primary text-center py-2 px-4 whitespace-nowrap">Login / Sign Up</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </header>
 
-    <section id="dashboard" class="container mx-auto my-8 p-4 bg-bg-light rounded-lg shadow">
-        <h3 class="text-xl font-bold mb-4">Host Dashboard</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-4">
-            <div class="card p-4">
-                <h4 class="font-bold">Total Earnings</h4>
-                <p class="text-2xl">$45,600</p>
+    <!-- Host View -->
+    <div id="host-view" class="hidden">
+        <section id="dashboard" class="container mx-auto my-8 p-4 bg-bg-light rounded-lg shadow">
+            <h3 class="text-xl font-bold mb-4">Host Dashboard</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-4">
+                <div class="card p-4">
+                    <h4 class="font-bold">Total Earnings</h4>
+                    <p class="text-2xl">$45,600</p>
+                </div>
+                <div class="card p-4">
+                    <h4 class="font-bold">Total Bookings</h4>
+                    <p class="text-2xl">34</p>
+                </div>
+                <div class="card p-4">
+                    <h4 class="font-bold">Occupancy Rate</h4>
+                    <p class="text-2xl">78%</p>
+                </div>
+                <div class="card p-4">
+                    <h4 class="font-bold">Average Rating</h4>
+                    <p class="text-2xl">4.8</p>
+                </div>
             </div>
-            <div class="card p-4">
-                <h4 class="font-bold">Total Bookings</h4>
-                <p class="text-2xl">34</p>
+
+            <h3 class="text-xl font-bold my-4">Your Properties</h3>
+            <div id="properties-list">
+                <!-- Properties will be loaded here -->
             </div>
-            <div class="card p-4">
-                <h4 class="font-bold">Occupancy Rate</h4>
-                <p class="text-2xl">78%</p>
+
+            <h3 class="text-xl font-bold my-4">Recent Bookings</h3>
+            <div id="booking-list-host">
+                <!-- Host's bookings will be loaded here -->
             </div>
-            <div class="card p-4">
-                <h4 class="font-bold">Average Rating</h4>
-                <p class="text-2xl">4.8</p>
+        </section>
+    </div>
+
+    <!-- Booker View -->
+    <div id="booker-view" class="hidden">
+        <section class="container mx-auto my-8 p-4">
+            <h2 class="text-3xl font-bold mb-6">My Bookings</h2>
+            <div id="booking-list-booker">
+                <!-- Booker's bookings will be loaded here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Property Modal -->
+    <div id="edit-property-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">Edit Property</h2>
+                    <button id="close-edit-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                </div>
+                <form id="edit-property-form" class="space-y-4">
+                    <input type="hidden" id="edit-property-id">
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Property Name *</label>
+                        <input type="text" id="edit-name" class="border rounded w-full p-2" required>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Location *</label>
+                        <input type="text" id="edit-location" class="border rounded w-full p-2" required>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Price per Night ($) *</label>
+                            <input type="number" id="edit-price" class="border rounded w-full p-2" min="0" step="0.01" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Property Type *</label>
+                            <select id="edit-type" class="border rounded w-full p-2" required>
+                                <option value="Luxury Lodge">Luxury Lodge</option>
+                                <option value="Tree Camp">Tree Camp</option>
+                                <option value="Desert Villa">Desert Villa</option>
+                                <option value="Apartment">Apartment</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Description *</label>
+                        <textarea id="edit-description" class="border rounded w-full p-2" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Max Guests</label>
+                            <input type="number" id="edit-max-guests" class="border rounded w-full p-2" min="1" value="4">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Rating</label>
+                            <input type="number" id="edit-rating" class="border rounded w-full p-2" min="0" max="5" step="0.1" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Check-in Time</label>
+                            <input type="text" id="edit-checkin-time" class="border rounded w-full p-2" placeholder="3:00 PM">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Check-out Time</label>
+                            <input type="text" id="edit-checkout-time" class="border rounded w-full p-2" placeholder="11:00 AM">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Image URL</label>
+                        <input type="text" id="edit-image" class="border rounded w-full p-2" placeholder="images/lodge.jpg">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Location Description</label>
+                        <textarea id="edit-location-description" class="border rounded w-full p-2" rows="3"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Cancellation Policy</label>
+                        <textarea id="edit-cancellation-policy" class="border rounded w-full p-2" rows="2"></textarea>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" id="edit-available" class="mr-2" checked>
+                        <label for="edit-available" class="text-sm font-medium">Property Available</label>
+                    </div>
+                    
+                    <div class="flex gap-4 pt-4">
+                        <button type="submit" class="btn-primary flex-1">Save Changes</button>
+                        <button type="button" id="cancel-edit" class="btn-secondary flex-1">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
-        <h3 class="text-xl font-bold my-4">Your Properties</h3>
-        <div class="card p-4 flex justify-between items-center mb-4">
-            <div>
-                <h4 class="font-bold">Luxury Safari Lodge</h4>
-                <p>Serengeti, Tanzania</p>
-            </div>
-            <div>
-                <button class="btn-secondary">Edit</button>
-                <button class="btn-danger">Delete</button>
-            </div>
-        </div>
-
-        <h3 class="text-xl font-bold my-4">Recent Bookings</h3>
-        <div id="booking-list">
-            <!-- Bookings will be loaded here -->
-        </div>
-    </section>
-
-<footer class="bg-brown text-white p-6 text-center">
+    <footer class="bg-brown text-white p-6 text-center">
         <p class="font-bold text-lg">Safari Stays</p>
         <p>Experience authentic African safari accommodations</p>
         <p>Company | Support | Connect</p>
@@ -124,6 +252,53 @@
                 loadBookings();
             }
         });
+
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const mainNav = document.getElementById('main-nav');
+            
+            if (mobileMenuToggle && mainNav) {
+                mobileMenuToggle.addEventListener('click', function() {
+                    mainNav.classList.toggle('hidden');
+                    mainNav.classList.toggle('flex');
+                });
+            }
+        });
     </script>
+    <style>
+        /* Additional styles for better navigation organization */
+        @media (max-width: 1024px) {
+            #main-nav ul {
+                background: white;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                padding: 1rem;
+            }
+            
+            #main-nav li {
+                width: 100%;
+            }
+            
+            #main-nav .btn-secondary,
+            #main-nav .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Ensure buttons don't wrap awkwardly on larger screens */
+        @media (min-width: 1024px) {
+            #main-nav ul {
+                flex-wrap: nowrap;
+            }
+        }
+        
+        /* Active state for current page */
+        #main-nav a[href="booking.html"] {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
 </body>
 </html>

@@ -1,0 +1,27 @@
+# Safari Stays - PHP API Configuration
+
+# Enable rewrite engine
+RewriteEngine On
+
+# Set base directory
+RewriteBase /
+
+# API Routes
+RewriteRule ^api/auth/register$ api/auth.php?action=register [QSA,L]
+RewriteRule ^api/auth/login$ api/auth.php?action=login [QSA,L]
+RewriteRule ^api/properties/?$ api/properties.php [QSA,L]
+RewriteRule ^api/properties/(\d+)$ api/properties.php/$1 [QSA,L]
+RewriteRule ^api/bookings/?$ api/bookings.php [QSA,L]
+RewriteRule ^api/host/stats/?$ api/host.php/stats [QSA,L]
+
+# Allow CORS
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
+
+# Handle OPTIONS requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+

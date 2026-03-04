@@ -54,7 +54,7 @@ async function initializeData() {
                 price: 450,
                 type: 'Luxury Lodge',
                 rating: 4.8,
-                image: 'lodge.jpg',
+                image: 'images/lodge.jpg',
                 description: 'Experience luxury in the heart of the Serengeti with stunning views and world-class amenities. This premium lodge offers spacious suites with private balconies overlooking the vast Serengeti plains. Wake up to the sounds of wildlife and enjoy gourmet meals prepared by our expert chefs. Perfect for couples and families seeking an unforgettable safari experience.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Safari Tours', 'Breakfast', 'Air Conditioning', 'Private Balcony', 'Restaurant', 'Bar'],
                 hostId: 1,
@@ -77,7 +77,7 @@ async function initializeData() {
                 price: 380,
                 type: 'Luxury Lodge',
                 rating: 4.6,
-                image: 'tree.jpg',
+                image: 'images/tree.jpg',
                 description: 'Authentic tented camp in the heart of the Serengeti plains with incredible wildlife viewing. Experience the true essence of African safari living in our luxury tents equipped with comfortable beds and en-suite bathrooms. The camp offers an intimate setting with only 12 tents, ensuring personalized service and exclusive wildlife encounters.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Wildlife Viewing', 'En-suite Bathroom', 'Hot Water', 'Laundry Service', 'Evening Campfire'],
                 hostId: 1,
@@ -100,7 +100,7 @@ async function initializeData() {
                 price: 320,
                 type: 'Tree Camp',
                 rating: 4.5,
-                image: 'tree.jpg',
+                image: 'images/tree.jpg',
                 description: 'Sleep among the trees in this unique wilderness camp offering an authentic safari experience. Elevated platforms provide stunning views of the surrounding bushveld and wildlife. Wake up to the sounds of birds and experience the thrill of sleeping in the African wilderness while enjoying modern comforts.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Wildlife Viewing', 'Elevated Platforms', 'En-suite Bathroom', 'Hot Water', 'Evening Campfire'],
                 hostId: 1,
@@ -122,7 +122,7 @@ async function initializeData() {
                 price: 350,
                 type: 'Luxury Lodge',
                 rating: 4.7,
-                image: 'villa.jpg',
+                image: 'images/villa.jpg',
                 description: 'Spacious villa with private game viewing deck overlooking the Kruger National Park. This family-friendly accommodation features three bedrooms, a fully equipped kitchen, and a large living area. The private deck offers uninterrupted views of the park, perfect for morning coffee while watching wildlife.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Game Viewing Deck', '3 Bedrooms', 'Living Room', 'BBQ Area', 'Air Conditioning', 'Washing Machine'],
                 hostId: 1,
@@ -145,7 +145,7 @@ async function initializeData() {
                 price: 410,
                 type: 'Luxury Lodge',
                 rating: 4.7,
-                image: 'mountainView.jpg',
+                image: 'images/mountainView.jpg',
                 description: 'Luxury lodge with breathtaking mountain views and easy access to the Masai Mara National Reserve. Perched on a hilltop, this lodge offers panoramic vistas of the Mara plains and the surrounding mountains. Each suite features floor-to-ceiling windows, private balconies, and elegant African-inspired décor. Perfect for romantic getaways and special occasions.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Safari Tours', 'Breakfast', 'Spa', 'Restaurant', 'Bar', 'Private Balcony', 'Room Service'],
                 hostId: 3,
@@ -167,7 +167,7 @@ async function initializeData() {
                 price: 360,
                 type: 'Tree Camp',
                 rating: 4.5,
-                image: 'delta.jpg',
+                image: 'images/delta.jpg',
                 description: 'Riverside camp perfect for witnessing the Great Migration. This seasonal camp is strategically positioned along the Mara River, offering front-row seats to one of nature\'s greatest spectacles. The camp operates during migration season (July-October) and provides comfortable tented accommodation with river views. Experience the dramatic river crossings as thousands of wildebeest and zebra make their way across.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Migration Viewing', 'River Views', 'Tented Accommodation', 'Hot Showers', 'Dining Tent', 'Evening Entertainment'],
                 hostId: 3,
@@ -190,7 +190,7 @@ async function initializeData() {
                 price: 380,
                 type: 'Luxury Lodge',
                 rating: 4.9,
-                image: 'delta.jpg',
+                image: 'images/delta.jpg',
                 description: 'Waterfront camp in the Okavango Delta offering unique water-based safari experiences. This eco-friendly camp floats on the delta waters, providing an immersive experience in one of Africa\'s most unique ecosystems. Enjoy mokoro (traditional canoe) rides, bird watching, and close encounters with hippos and crocodiles in their natural habitat.',
                 amenities: ['Wi-Fi', 'Pool', 'Safari Tours', 'Breakfast', 'Mokoro Rides', 'Water Activities', 'Bird Watching', 'Fishing', 'Eco-Friendly'],
                 hostId: 2,
@@ -213,7 +213,7 @@ async function initializeData() {
                 price: 420,
                 type: 'Luxury Lodge',
                 rating: 4.7,
-                image: 'lodge.jpg',
+                image: 'images/lodge.jpg',
                 description: 'Luxury lodge with mokoro (canoe) excursions into the delta channels. This permanent lodge offers the perfect blend of comfort and adventure, with spacious suites featuring private decks overlooking the delta. Professional guides lead daily mokoro excursions and walking safaris, providing intimate wildlife encounters.',
                 amenities: ['Wi-Fi', 'Pool', 'Mokoro Tours', 'Breakfast', 'Water Activities', 'Walking Safaris', 'Spa', 'Restaurant', 'Bar', 'Private Deck'],
                 hostId: 2,
@@ -236,7 +236,7 @@ async function initializeData() {
                 price: 280,
                 type: 'Desert Villa',
                 rating: 4.2,
-                image: 'villa.jpg',
+                image: 'images/villa.jpg',
                 description: 'Modern villa in the stunning Namib Desert with panoramic desert views and luxury amenities. This contemporary desert retreat offers a unique blend of comfort and isolation, perfect for those seeking tranquility and stargazing opportunities. The villa features floor-to-ceiling windows, a private pool, and a rooftop terrace for sunset viewing.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Desert Views', 'Rooftop Terrace', 'Air Conditioning', 'Stargazing Deck', 'BBQ Facilities'],
                 hostId: 2,
@@ -258,7 +258,7 @@ async function initializeData() {
                 price: 320,
                 type: 'Desert Villa',
                 rating: 4.5,
-                image: 'savanna.jpg',
+                image: 'images/savanna.jpg',
                 description: 'Luxury desert lodge near the famous Sossusvlei dunes. Experience the world\'s oldest desert from this elegant lodge featuring spacious suites with private decks. Wake up early to witness the sunrise over the iconic red dunes, some of the tallest in the world. The lodge offers guided dune tours and desert excursions.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Dune Tours', 'Desert Excursions', 'Restaurant', 'Bar', 'Spa', 'Private Deck'],
                 hostId: 2,
@@ -281,7 +281,7 @@ async function initializeData() {
                 price: 150,
                 type: 'Apartment',
                 rating: 4.8,
-                image: 'lodge.jpg',
+                image: 'images/lodge.jpg',
                 description: 'Modern apartment in the heart of Cape Town with stunning views of Table Mountain. This stylish two-bedroom apartment is located in the vibrant V&A Waterfront area, within walking distance of restaurants, shops, and attractions. The apartment features contemporary décor, a fully equipped kitchen, and a balcony with mountain views.',
                 amenities: ['Wi-Fi', 'Kitchen', 'Parking', 'City Center', 'Mountain Views', 'Balcony', 'Washing Machine', 'Air Conditioning', 'TV', 'Near Restaurants'],
                 hostId: 3,
@@ -304,7 +304,7 @@ async function initializeData() {
                 price: 310,
                 type: 'Luxury Lodge',
                 rating: 4.6,
-                image: 'mountainView.jpg',
+                image: 'images/mountainView.jpg',
                 description: 'Luxury lodge with views of Victoria Falls and the Zambezi River. This elegant lodge offers spacious rooms with private balconies overlooking the "Smoke that Thunders". Wake up to the sound of the falls and enjoy world-class amenities including a spa, restaurant, and bar. Perfect for couples and families seeking adventure.',
                 amenities: ['Wi-Fi', 'Pool', 'Safari Tours', 'Breakfast', 'Falls View', 'Spa', 'Restaurant', 'Bar', 'Adventure Activities', 'Private Balcony'],
                 hostId: 3,
@@ -327,7 +327,7 @@ async function initializeData() {
                 price: 520,
                 type: 'Luxury Lodge',
                 rating: 4.9,
-                image: 'mountainView.jpg',
+                image: 'images/mountainView.jpg',
                 description: 'Luxury lodge on the rim of Ngorongoro Crater with breathtaking views. This exclusive lodge offers the ultimate safari experience with panoramic views of the crater floor below. Each suite features a private deck, fireplace, and elegant African-inspired décor. The lodge provides guided crater descents and game drives.',
                 amenities: ['Wi-Fi', 'Pool', 'Safari Tours', 'Breakfast', 'Crater View', 'Spa', 'Fine Dining', 'Bar', 'Private Deck', 'Fireplace', 'Game Drives'],
                 hostId: 1,
@@ -350,7 +350,7 @@ async function initializeData() {
                 price: 400,
                 type: 'Luxury Lodge',
                 rating: 4.8,
-                image: 'tree.jpg',
+                image: 'images/tree.jpg',
                 description: 'Lodge near Bwindi Impenetrable Forest, perfect for gorilla trekking experiences. This eco-friendly lodge offers comfortable accommodation in the heart of gorilla country. The lodge organizes gorilla trekking permits and provides experienced guides. After your trek, relax in the lodge\'s restaurant and bar while sharing stories with fellow travelers.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Gorilla Trekking', 'Eco-Friendly', 'Restaurant', 'Bar', 'Guided Treks', 'Permit Assistance', 'Gift Shop'],
                 hostId: 4,
@@ -373,7 +373,7 @@ async function initializeData() {
                 price: 120,
                 type: 'Luxury Lodge',
                 rating: 4.7,
-                image: 'villa.jpg',
+                image: 'images/villa.jpg',
                 description: 'Traditional Moroccan riad in the heart of Marrakech medina. This beautifully restored 18th-century riad features a central courtyard with a fountain, traditional Moroccan tiles, and comfortable rooms. Experience authentic Moroccan hospitality, enjoy traditional mint tea, and explore the vibrant souks just steps away.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Cultural Tours', 'Traditional Architecture', 'Central Courtyard', 'Rooftop Terrace', 'Hammam', 'Restaurant'],
                 hostId: 5,
@@ -396,7 +396,7 @@ async function initializeData() {
                 price: 180,
                 type: 'Luxury Lodge',
                 rating: 4.6,
-                image: 'lodge.jpg',
+                image: 'images/lodge.jpg',
                 description: 'Hotel with stunning views of the Great Pyramids of Giza. This modern hotel offers comfortable rooms with pyramid views, a rooftop pool, and a restaurant. Wake up to views of the ancient pyramids and enjoy easy access to the Giza Plateau. The hotel organizes pyramid tours and camel rides.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Pyramid Tours', 'Rooftop Pool', 'Restaurant', 'Bar', 'Pyramid Views', 'Tour Desk', 'Camel Rides'],
                 hostId: 6,
@@ -419,7 +419,7 @@ async function initializeData() {
                 price: 340,
                 type: 'Tree Camp',
                 rating: 4.6,
-                image: 'delta.jpg',
+                image: 'images/delta.jpg',
                 description: 'Riverside camp in Chobe National Park with excellent elephant viewing. This camp offers comfortable tented accommodation along the Chobe River, where hundreds of elephants gather daily. Enjoy boat cruises on the river, game drives in the park, and evening campfires under the stars.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'River Cruises', 'Tented Accommodation', 'River Views', 'Game Drives', 'Evening Campfire', 'Dining Tent'],
                 hostId: 2,
@@ -442,7 +442,7 @@ async function initializeData() {
                 price: 290,
                 type: 'Luxury Lodge',
                 rating: 4.5,
-                image: 'savanna.jpg',
+                image: 'images/savanna.jpg',
                 description: 'Lodge overlooking the Etosha salt pan with excellent wildlife viewing. This comfortable lodge offers spacious rooms with views of the pan, a waterhole viewing area, and a restaurant. The lodge is located near several waterholes, providing excellent opportunities to observe wildlife, especially during the dry season.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Waterhole Viewing', 'Restaurant', 'Bar', 'Waterhole Deck', 'Game Drives', 'Swimming Pool'],
                 hostId: 2,
@@ -465,7 +465,7 @@ async function initializeData() {
                 price: 370,
                 type: 'Luxury Lodge',
                 rating: 4.7,
-                image: 'mountainView.jpg',
+                image: 'images/mountainView.jpg',
                 description: 'Lodge with views of Mount Kilimanjaro and excellent elephant viewing. This lodge offers spacious rooms with private balconies facing Africa\'s highest peak. Amboseli is famous for its large elephant herds and stunning Kilimanjaro views. Enjoy game drives, nature walks, and cultural visits to Maasai villages.',
                 amenities: ['Wi-Fi', 'Pool', 'Safari Tours', 'Breakfast', 'Mountain View', 'Kilimanjaro Views', 'Restaurant', 'Bar', 'Cultural Tours', 'Nature Walks'],
                 hostId: 3,
@@ -488,7 +488,7 @@ async function initializeData() {
                 price: 330,
                 type: 'Tree Camp',
                 rating: 4.4,
-                image: 'tree.jpg',
+                image: 'images/tree.jpg',
                 description: 'Authentic camp in Tsavo National Park with red earth landscapes. This rustic camp offers an authentic safari experience in Kenya\'s largest national park. The red earth gives the landscape a unique appearance, and the park is home to diverse wildlife including elephants, lions, and the rare fringed-eared oryx.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Wildlife Viewing', 'Tented Accommodation', 'Campfire', 'Dining Tent', 'Game Drives'],
                 hostId: 3,
@@ -511,7 +511,7 @@ async function initializeData() {
                 price: 280,
                 type: 'Tree Camp',
                 rating: 4.4,
-                image: 'delta.jpg',
+                image: 'images/delta.jpg',
                 description: 'Wildlife camp in Hwange National Park with excellent elephant viewing. This comfortable camp offers tented accommodation near waterholes, where large herds of elephants gather. Hwange is Zimbabwe\'s largest national park and home to one of Africa\'s largest elephant populations. Enjoy game drives, walking safaris, and waterhole viewing.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Elephant Viewing', 'Tented Accommodation', 'Waterhole Viewing', 'Game Drives', 'Walking Safaris', 'Campfire'],
                 hostId: 7,
@@ -534,7 +534,7 @@ async function initializeData() {
                 price: 85,
                 type: 'Apartment',
                 rating: 4.6,
-                image: 'lodge.jpg',
+                image: 'images/lodge.jpg',
                 description: 'Modern apartment in the heart of Addis Ababa, close to museums, restaurants, and cultural sites. This comfortable one-bedroom apartment is perfect for exploring Ethiopia\'s capital city. The apartment features modern amenities, a fully equipped kitchen, and is within walking distance of major attractions including the National Museum and Merkato market.',
                 amenities: ['Wi-Fi', 'Kitchen', 'Parking', 'City Center', 'Cultural Tours', 'Washing Machine', 'TV', 'Air Conditioning', 'Near Museums', 'Near Restaurants'],
                 hostId: 8,
@@ -557,7 +557,7 @@ async function initializeData() {
                 price: 150,
                 type: 'Luxury Lodge',
                 rating: 4.9,
-                image: 'delta.jpg',
+                image: 'images/delta.jpg',
                 description: 'Authentic lodge near the famous rock-hewn churches of Lalibela, a UNESCO World Heritage site. This traditional Ethiopian lodge offers comfortable accommodation just minutes from the churches. Experience authentic Ethiopian hospitality, enjoy traditional meals, and explore the incredible 12th-century churches carved from solid rock.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Church Tours', 'Cultural Experience', 'Traditional Meals', 'Restaurant', 'Cultural Shows', 'Guided Tours'],
                 hostId: 8,
@@ -580,7 +580,7 @@ async function initializeData() {
                 price: 95,
                 type: 'Apartment',
                 rating: 4.5,
-                image: 'villa.jpg',
+                image: 'images/villa.jpg',
                 description: 'Modern apartment in Kigali with easy access to city attractions. This clean and comfortable apartment is perfect for business travelers and tourists exploring Rwanda\'s capital. The apartment features modern amenities, a kitchen, and is located in a safe neighborhood with good restaurants and shops nearby.',
                 amenities: ['Wi-Fi', 'Kitchen', 'Parking', 'City Center', 'Washing Machine', 'TV', 'Air Conditioning', 'Safe Neighborhood', 'Near Restaurants'],
                 hostId: 9,
@@ -603,7 +603,7 @@ async function initializeData() {
                 price: 450,
                 type: 'Luxury Lodge',
                 rating: 4.8,
-                image: 'mountainView.jpg',
+                image: 'images/mountainView.jpg',
                 description: 'Lodge near Volcanoes National Park, perfect for gorilla trekking. This comfortable lodge offers the perfect base for gorilla trekking adventures. The lodge organizes gorilla permits and provides experienced guides. After your trek, relax in the cozy lounge, enjoy delicious meals, and share stories with fellow travelers.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast', 'Gorilla Trekking', 'Restaurant', 'Bar', 'Cozy Lounge', 'Permit Assistance', 'Experienced Guides', 'Gift Shop'],
                 hostId: 9,
@@ -626,7 +626,7 @@ async function initializeData() {
                 price: 200,
                 type: 'Luxury Lodge',
                 rating: 4.7,
-                image: 'lodge.jpg',
+                image: 'images/lodge.jpg',
                 description: 'Beachfront resort on Diani Beach with stunning ocean views. This tropical paradise offers direct beach access, a swimming pool, and comfortable rooms with ocean views. Diani Beach is known for its white sand, turquoise waters, and excellent water sports. Perfect for relaxation and adventure.',
                 amenities: ['Wi-Fi', 'Pool', 'Beach Access', 'Breakfast', 'Water Sports', 'Restaurant', 'Bar', 'Ocean Views', 'Snorkeling', 'Diving', 'Beach Bar'],
                 hostId: 3,
@@ -649,7 +649,7 @@ async function initializeData() {
                 price: 130,
                 type: 'Apartment',
                 rating: 4.6,
-                image: 'tree.jpg',
+                image: 'images/tree.jpg',
                 description: 'Historic apartment in Stone Town, Zanzibar with authentic Swahili architecture. This beautifully restored apartment is located in a historic building in Stone Town, a UNESCO World Heritage Site. Experience the unique blend of Arab, Persian, Indian, and European influences in the architecture and culture.',
                 amenities: ['Wi-Fi', 'Kitchen', 'Parking', 'Historic Area', 'Cultural Tours', 'Traditional Architecture', 'Near Beaches', 'Near Markets', 'Air Conditioning'],
                 hostId: 1,
@@ -672,7 +672,7 @@ async function initializeData() {
                 price: 110,
                 type: 'Luxury Lodge',
                 rating: 4.5,
-                image: 'savanna.jpg',
+                image: 'images/savanna.jpg',
                 description: 'Traditional Swahili house in Lamu Old Town, a UNESCO World Heritage site. This authentic Swahili house features traditional architecture with a central courtyard, carved wooden doors, and rooftop terrace. Experience the unique Swahili culture, enjoy fresh seafood, and explore the historic town on foot or by donkey.',
                 amenities: ['Wi-Fi', 'Kitchen', 'Beach Access', 'Cultural Tours', 'Traditional Architecture', 'Rooftop Terrace', 'Central Courtyard', 'Near Beaches', 'Donkey Rides'],
                 hostId: 3,
@@ -1181,6 +1181,38 @@ app.post('/api/bookings', authenticateToken, async (req, res) => {
         res.status(201).json({ ...newBooking, property });
     } catch (error) {
         console.error('Create booking error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Delete a booking (Booker only)
+app.delete('/api/bookings/:id', authenticateToken, async (req, res) => {
+    try {
+        if (req.user.role !== 'booker') {
+            return res.status(403).json({ error: 'Only bookers can cancel bookings' });
+        }
+
+        const bookingId = parseInt(req.params.id);
+        const bookings = await readData(BOOKINGS_FILE);
+        
+        const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+
+        if (bookingIndex === -1) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+
+        // Ensure the user owns this booking
+        if (bookings[bookingIndex].userId !== req.user.id) {
+            return res.status(403).json({ error: 'You are not authorized to cancel this booking' });
+        }
+
+        // Remove the booking
+        bookings.splice(bookingIndex, 1);
+        await writeData(BOOKINGS_FILE, bookings);
+
+        res.json({ message: 'Booking cancelled successfully' });
+    } catch (error) {
+        console.error('Cancel booking error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

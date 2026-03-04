@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Safari Stays</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-bg-light">
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+                
+                <nav class="hidden lg:flex w-full lg:w-auto">
+                    <ul class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-3 w-full lg:w-auto">
+                        <li class="flex lg:contents">
+                            <a href="index.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Home</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="search.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Search</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="booking.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">My Bookings</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="wishlist.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Wishlist</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="become-host.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Become a Host</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="messages.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Messages</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="profile.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap bg-[var(--primary-color)] text-white">Profile</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="login.html" class="btn-primary text-center py-2 px-4 whitespace-nowrap">Login / Sign Up</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto my-8 p-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">My Profile</h2>
+            
+            <!-- Login Prompt -->
+            <div id="login-prompt" class="hidden card p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4">Login Required</h3>
+                <p class="text-gray-600 mb-4">Please login to view your profile.</p>
+                <a href="login.html" class="btn-primary">Login / Sign Up</a>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profile-content" class="hidden">
+                <!-- Profile Header -->
+                <div class="card p-6 mb-6">
+                    <div class="flex items-center gap-6">
+                        <div class="w-24 h-24 bg-brown rounded-full flex items-center justify-center text-white font-bold text-3xl" id="profile-initial">U</div>
+                        <div class="flex-1">
+                            <h3 class="text-2xl font-bold" id="profile-name">User Name</h3>
+                            <p class="text-gray-600" id="profile-email">user@example.com</p>
+                            <p class="text-sm text-gray-500 mt-1" id="profile-role">Role: Guest</p>
+                        </div>
+                        <button onclick="logout()" class="btn-secondary">Logout</button>
+                    </div>
+                </div>
+
+                <!-- Profile Stats -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="card p-4 text-center">
+                        <h4 class="text-sm text-gray-600 mb-2">Total Bookings</h4>
+                        <p class="text-3xl font-bold" id="total-bookings">0</p>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <h4 class="text-sm text-gray-600 mb-2">Wishlist Items</h4>
+                        <p class="text-3xl font-bold" id="wishlist-count">0</p>
+                    </div>
+                    <div class="card p-4 text-center">
+                        <h4 class="text-sm text-gray-600 mb-2">Messages</h4>
+                        <p class="text-3xl font-bold" id="messages-count">0</p>
+                    </div>
+                </div>
+
+                <!-- Host Stats (if host) -->
+                <div id="host-stats" class="hidden card p-6 mb-6">
+                    <h3 class="text-xl font-bold mb-4">Host Statistics</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div>
+                            <h4 class="text-sm text-gray-600 mb-2">Properties Listed</h4>
+                            <p class="text-2xl font-bold" id="host-properties">0</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-600 mb-2">Total Earnings</h4>
+                            <p class="text-2xl font-bold" id="host-earnings">$0</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-600 mb-2">Total Bookings</h4>
+                            <p class="text-2xl font-bold" id="host-bookings">0</p>
+                        </div>
+                        <div>
+                            <h4 class="text-sm text-gray-600 mb-2">Average Rating</h4>
+                            <p class="text-2xl font-bold" id="host-rating">0.0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Settings -->
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold mb-4">Account Settings</h3>
+                    <form id="profile-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Full Name</label>
+                            <input type="text" id="profile-name-input" class="border rounded w-full p-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Email</label>
+                            <input type="email" id="profile-email-input" class="border rounded w-full p-2" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Phone Number</label>
+                            <input type="tel" id="profile-phone" class="border rounded w-full p-2">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Bio</label>
+                            <textarea id="profile-bio" class="border rounded w-full p-2" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brown text-white p-6 text-center mt-8">
+        <p class="font-bold text-lg">Safari Stays</p>
+        <p>Experience authentic African safari accommodations</p>
+        <p>&copy; 2025 Safari Stays. All rights reserved.</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const user = SafariStaysAPI?.getCurrentUser();
+            const loginPrompt = document.getElementById('login-prompt');
+            const profileContent = document.getElementById('profile-content');
+            
+            if (!user) {
+                loginPrompt.classList.remove('hidden');
+            } else {
+                profileContent.classList.remove('hidden');
+                await loadProfile(user);
+            }
+            
+            const form = document.getElementById('profile-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    saveProfile();
+                });
+            }
+        });
+
+        async function loadProfile(user) {
+            // Display user info
+            document.getElementById('profile-name').textContent = user.name || 'User';
+            document.getElementById('profile-email').textContent = user.email || '';
+            document.getElementById('profile-role').textContent = `Role: ${user.role === 'host' ? 'Host' : 'Guest'}`;
+            document.getElementById('profile-initial').textContent = (user.name || 'U')[0].toUpperCase();
+            
+            // Load stats
+            const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            const conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+            
+            document.getElementById('wishlist-count').textContent = wishlist.length;
+            document.getElementById('messages-count').textContent = conversations.length;
+            
+            try {
+                const bookings = await SafariStaysAPI.bookings.getAll();
+                document.getElementById('total-bookings').textContent = bookings.length;
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+            }
+            
+            // Load host stats if host
+            if (user.role === 'host') {
+                document.getElementById('host-stats').classList.remove('hidden');
+                try {
+                    const stats = await SafariStaysAPI.host.getStats();
+                    document.getElementById('host-properties').textContent = stats.properties || stats.totalProperties || 0;
+                    document.getElementById('host-earnings').textContent = '$' + (stats.revenue || stats.totalEarnings || 0).toLocaleString();
+                    document.getElementById('host-bookings').textContent = stats.bookings || stats.totalBookings || 0;
+                    document.getElementById('host-rating').textContent = (stats.averageRating || 0).toFixed(1);
+                } catch (error) {
+                    console.error('Error loading host stats:', error);
+                }
+            }
+            
+            // Load saved profile data
+            const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            if (savedProfile.name) document.getElementById('profile-name-input').value = savedProfile.name;
+            if (savedProfile.email) document.getElementById('profile-email-input').value = savedProfile.email;
+            if (savedProfile.phone) document.getElementById('profile-phone').value = savedProfile.phone;
+            if (savedProfile.bio) document.getElementById('profile-bio').value = savedProfile.bio;
+        }
+
+        function saveProfile() {
+            const profileData = {
+                name: document.getElementById('profile-name-input').value,
+                email: document.getElementById('profile-email-input').value,
+                phone: document.getElementById('profile-phone').value,
+                bio: document.getElementById('profile-bio').value
+            };
+            
+            localStorage.setItem('userProfile', JSON.stringify(profileData));
+            alert('Profile updated successfully!');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>
+

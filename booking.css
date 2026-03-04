@@ -86,3 +86,57 @@ h1, h2, h3, h4, h5, h6 {
 footer {
     margin-top: auto;
 }
+
+/* Navigation improvements */
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav a {
+    text-decoration: none;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* Better button sizing for navigation */
+header .btn-secondary,
+header .btn-primary {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    min-width: fit-content;
+}
+
+/* Responsive navigation */
+@media (max-width: 1024px) {
+    header nav {
+        width: 100%;
+    }
+    
+    header nav ul {
+        width: 100%;
+    }
+    
+    header nav li {
+        width: 100%;
+    }
+    
+    header .btn-secondary,
+    header .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Ensure currency selector doesn't break layout */
+#currency-select-booking {
+    max-width: 200px;
+}
+
+@media (max-width: 640px) {
+    #currency-select-booking {
+        max-width: 100%;
+        width: 100%;
+    }
+}

@@ -67,7 +67,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <img id="property-image" src="lodge.jpg" alt="Property" class="w-full h-96 object-cover rounded-lg mb-4">
+                        <img id="property-image" src="/images/lodge.jpg" alt="Property" class="w-full h-96 object-cover rounded-lg mb-4" onerror="this.src='/images/lodge.jpg'; this.onerror=null;">
                         
                         <!-- Host Information -->
                         <div class="mt-6 p-4 bg-gray-50 rounded-lg">
@@ -221,6 +221,10 @@
                                 </div>
                                 <button type="submit" class="btn-primary w-full mt-4">Reserve</button>
                             </form>
+                            <div class="mt-4 space-y-2">
+                                <button onclick="addToWishlist()" class="btn-secondary w-full" id="wishlist-btn">Add to Wishlist</button>
+                                <button onclick="messageHost()" class="btn-secondary w-full">Message Host</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -265,46 +269,53 @@
         // Fallback property data mapping
         const propertyData = {
             'Luxury Safari Lodge': { 
-                image: 'lodge.jpg', 
+                image: 'images/lodge.jpg', 
                 price: 450, 
                 location: 'Serengeti, Tanzania',
                 description: 'Experience luxury in the heart of the Serengeti with stunning views and world-class amenities.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Safari Tours', 'Breakfast']
             },
             'Wilderness Tree Camp': { 
-                image: 'tree.jpg', 
+                image: 'images/tree.jpg', 
                 price: 320, 
                 location: 'Kruger, South Africa',
                 description: 'Sleep among the trees in this unique wilderness camp offering an authentic safari experience.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast']
             },
             'Desert Safari Villa': { 
-                image: 'villa.jpg', 
+                image: 'images/villa.jpg', 
                 price: 280, 
                 location: 'Namib Desert, Namibia',
                 description: 'Modern villa in the stunning Namib Desert with panoramic desert views and luxury amenities.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking']
             },
             'Riverside Safari Camp': { 
-                image: 'delta.jpg', 
+                image: 'images/delta.jpg', 
                 price: 380, 
                 location: 'Okavango Delta, Botswana',
                 description: 'Waterfront camp in the Okavango Delta offering unique water-based safari experiences.',
                 amenities: ['Wi-Fi', 'Pool', 'Safari Tours', 'Breakfast']
             },
             'Mountain View Lodge': { 
-                image: 'mountainView.jpg', 
+                image: 'images/mountainView.jpg', 
                 price: 410, 
                 location: 'Masai Mara, Kenya',
                 description: 'Luxury lodge with breathtaking mountain views and easy access to the Masai Mara National Reserve.',
                 amenities: ['Wi-Fi', 'Pool', 'Kitchen', 'Parking', 'Safari Tours', 'Breakfast']
             },
             'Savanna Retreat': { 
-                image: 'savanna.jpg', 
+                image: 'images/savanna.jpg', 
                 price: 295, 
                 location: 'Harare, Zimbabwe',
                 description: 'Peaceful retreat in the Zimbabwean savanna with comfortable accommodations and wildlife viewing.',
                 amenities: ['Wi-Fi', 'Safari Tours', 'Breakfast']
+            },
+            'Ngorongoro Crater Lodge': { 
+                image: 'images/mountainView.jpg', 
+                price: 520, 
+                location: 'Ngorongoro Crater, Tanzania',
+                description: 'Luxury lodge on the rim of Ngorongoro Crater with breathtaking views.',
+                amenities: ['Wi-Fi', 'Pool', 'Safari Tours', 'Breakfast', 'Crater View', 'Spa', 'Fine Dining', 'Bar']
             }
         };
 
@@ -406,8 +417,13 @@
             if (titleEl) titleEl.textContent = currentProperty?.name || property.title || 'Property Details';
             if (locationEl) locationEl.textContent = currentProperty?.location || property.location || data?.location || 'Location not specified';
             if (imageEl) {
-                imageEl.src = currentProperty?.image || data?.image || 'lodge.jpg';
+                const imagePath = currentProperty?.image || data?.image || 'images/lodge.jpg';
+                imageEl.src = imagePath.startsWith('/') ? imagePath : '/' + imagePath;
                 imageEl.alt = currentProperty?.name || property.title || 'Property image';
+                imageEl.onerror = function() {
+                    this.src = '/images/lodge.jpg';
+                    this.onerror = null;
+                };
             }
             const propertyPrice = currentProperty?.price || data.price;
             document.getElementById('property-price').textContent = CurrencyConverter.formatDisplay(propertyPrice);
@@ -489,6 +505,13 @@
                 'Free cancellation for 48 hours. After that, cancel before check-in and get a 50% refund, minus the service fee.';
             const cancellationEl = document.getElementById('cancellation-policy');
             if (cancellationEl) cancellationEl.textContent = cancellationPolicy;
+            
+            // Update wishlist button after property is loaded
+            setTimeout(() => {
+                if (typeof updateWishlistButton === 'function' && currentProperty) {
+                    updateWishlistButton();
+                }
+            }, 100);
             
             // Cache property data for currency updates
             propertyDataCache = data;
@@ -639,6 +662,59 @@
                 });
             }
             
+            // Update wishlist button state
+            function updateWishlistButton() {
+                const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                const btn = document.getElementById('wishlist-btn');
+                if (btn && currentProperty) {
+                    if (wishlist.includes(currentProperty.id)) {
+                        btn.textContent = 'Remove from Wishlist';
+                        btn.classList.add('bg-red-100', 'text-red-700');
+                    } else {
+                        btn.textContent = 'Add to Wishlist';
+                        btn.classList.remove('bg-red-100', 'text-red-700');
+                    }
+                }
+            }
+            
+            // Add to wishlist function
+            window.addToWishlist = function() {
+                if (!currentProperty) return;
+                let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+                if (wishlist.includes(currentProperty.id)) {
+                    wishlist = wishlist.filter(id => id !== currentProperty.id);
+                    alert('Removed from wishlist!');
+                } else {
+                    wishlist.push(currentProperty.id);
+                    alert('Added to wishlist!');
+                }
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                updateWishlistButton();
+            };
+            
+            // Message host function
+            window.messageHost = function() {
+                if (!currentProperty) return;
+                const hostName = currentProperty.hostName || 'Host';
+                const propertyName = currentProperty.name || 'Property';
+                if (typeof startConversation === 'function') {
+                    startConversation(hostName, propertyName, currentProperty.id);
+                    window.location.href = 'messages.html';
+                } else {
+                    sessionStorage.setItem('messageHost', JSON.stringify({
+                        hostName: hostName,
+                        propertyName: propertyName,
+                        propertyId: currentProperty.id
+                    }));
+                    window.location.href = 'messages.html';
+                }
+            };
+            
+            // Update wishlist button on load
+            if (currentProperty) {
+                updateWishlistButton();
+            }
+            
             // Handle booking form submission
             document.getElementById('booking-form').addEventListener('submit', async function(e) {
                 e.preventDefault();
@@ -678,8 +754,8 @@
                         guests: parseInt(guests)
                     });
 
-                    alert('Booking confirmed! Redirecting to booking page...');
-                    window.location.href = 'booking.html';
+                    alert('Booking confirmed!');
+                    // Optionally, update UI to show booking status or provide a link to bookings page.
                 } catch (error) {
                     alert('Booking failed: ' + error.message);
                     console.error('Booking error:', error);

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Host - Safari Stays</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-bg-light">
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+                
+                <nav class="hidden lg:flex w-full lg:w-auto">
+                    <ul class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-3 w-full lg:w-auto">
+                        <li class="flex lg:contents">
+                            <a href="index.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Home</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="search.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Search</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="booking.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">My Bookings</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="wishlist.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Wishlist</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="become-host.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap bg-[var(--primary-color)] text-white">Become a Host</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="messages.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Messages</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="profile.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Profile</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="login.html" class="btn-primary text-center py-2 px-4 whitespace-nowrap">Login / Sign Up</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto my-8 p-4">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6">Become a Host</h2>
+            
+            <!-- Check if user is logged in -->
+            <div id="login-prompt" class="hidden card p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4">Login Required</h3>
+                <p class="text-gray-600 mb-4">Please login or create an account to become a host.</p>
+                <a href="login.html" class="btn-primary">Login / Sign Up</a>
+            </div>
+
+            <!-- Host Registration Form -->
+            <div id="host-registration" class="hidden card p-6 mb-6">
+                <h3 class="text-xl font-bold mb-4">Register as Host</h3>
+                <p class="text-gray-600 mb-4">Create a host account to start listing your properties.</p>
+                <a href="signup.html" class="btn-primary">Register as Host</a>
+            </div>
+
+            <!-- Add Property Form (for existing hosts) -->
+            <div id="add-property-section" class="hidden">
+                <div class="card p-6 mb-6">
+                    <h3 class="text-xl font-bold mb-4">List Your Property</h3>
+                    <form id="add-property-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Property Name *</label>
+                            <input type="text" id="property-name" class="border rounded w-full p-2" required>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Location *</label>
+                            <input type="text" id="property-location" class="border rounded w-full p-2" placeholder="e.g., Serengeti, Tanzania" required>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Price per Night ($) *</label>
+                                <input type="number" id="property-price" class="border rounded w-full p-2" min="0" step="0.01" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Property Type *</label>
+                                <select id="property-type" class="border rounded w-full p-2" required>
+                                    <option value="">Select type</option>
+                                    <option value="Luxury Lodge">Luxury Lodge</option>
+                                    <option value="Tree Camp">Tree Camp</option>
+                                    <option value="Desert Villa">Desert Villa</option>
+                                    <option value="Apartment">Apartment</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Description *</label>
+                            <textarea id="property-description" class="border rounded w-full p-2" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Max Guests</label>
+                                <input type="number" id="property-max-guests" class="border rounded w-full p-2" min="1" value="4">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Image URL</label>
+                                <input type="text" id="property-image" class="border rounded w-full p-2" placeholder="images/lodge.jpg">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Check-in Time</label>
+                                <input type="text" id="property-checkin" class="border rounded w-full p-2" placeholder="3:00 PM">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Check-out Time</label>
+                                <input type="text" id="property-checkout" class="border rounded w-full p-2" placeholder="11:00 AM">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Location Description</label>
+                            <textarea id="property-location-desc" class="border rounded w-full p-2" rows="3"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Cancellation Policy</label>
+                            <textarea id="property-cancellation" class="border rounded w-full p-2" rows="2"></textarea>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" id="property-available" class="mr-2" checked>
+                            <label for="property-available" class="text-sm font-medium">Property Available</label>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary w-full">List Property</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brown text-white p-6 text-center mt-8">
+        <p class="font-bold text-lg">Safari Stays</p>
+        <p>Experience authentic African safari accommodations</p>
+        <p>&copy; 2025 Safari Stays. All rights reserved.</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = SafariStaysAPI?.getCurrentUser();
+            const loginPrompt = document.getElementById('login-prompt');
+            const hostRegistration = document.getElementById('host-registration');
+            const addPropertySection = document.getElementById('add-property-section');
+            
+            if (!user) {
+                loginPrompt.classList.remove('hidden');
+            } else if (user.role !== 'host') {
+                hostRegistration.classList.remove('hidden');
+            } else {
+                addPropertySection.classList.remove('hidden');
+            }
+            
+            const form = document.getElementById('add-property-form');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const propertyData = {
+                        name: document.getElementById('property-name').value,
+                        location: document.getElementById('property-location').value,
+                        price: parseFloat(document.getElementById('property-price').value),
+                        type: document.getElementById('property-type').value,
+                        description: document.getElementById('property-description').value,
+                        maxGuests: parseInt(document.getElementById('property-max-guests').value),
+                        image: document.getElementById('property-image').value || 'images/lodge.jpg',
+                        checkinTime: document.getElementById('property-checkin').value,
+                        checkoutTime: document.getElementById('property-checkout').value,
+                        locationDescription: document.getElementById('property-location-desc').value,
+                        cancellationPolicy: document.getElementById('property-cancellation').value,
+                        available: document.getElementById('property-available').checked,
+                        amenities: []
+                    };
+                    
+                    try {
+                        await SafariStaysAPI.properties.create(propertyData);
+                        alert('Property listed successfully!');
+                        form.reset();
+                        window.location.href = 'booking.html';
+                    } catch (error) {
+                        console.error('Error creating property:', error);
+                        alert('Error creating property: ' + (error.message || 'Unknown error'));
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

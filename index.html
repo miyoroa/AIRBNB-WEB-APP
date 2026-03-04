@@ -45,10 +45,10 @@
           </li>
           <li><a href="search.html" class="btn-secondary">Search</a></li>
           <li><a href="booking.html" class="btn-secondary">My Bookings</a></li>
-          <li><a href="#wishlist" class="btn-secondary">Wishlist</a></li>
-          <li><a href="#become-host" class="btn-secondary">Become a Host</a></li>
-          <li><a href="#messages" class="btn-secondary">Messages</a></li>
-          <li><a href="#profile" class="btn-secondary">Profile</a></li>
+          <li><a href="wishlist.html" class="btn-secondary">Wishlist</a></li>
+          <li><a href="become-host.html" class="btn-secondary">Become a Host</a></li>
+          <li><a href="messages.html" class="btn-secondary">Messages</a></li>
+          <li><a href="profile.html" class="btn-secondary">Profile</a></li>
           <li><a href="login.html" class="btn-primary">Login / Sign Up</a></li>
         </ul>
       </nav>
@@ -192,7 +192,19 @@
       ];
 
       try {
-        const properties = await SafariStaysAPI.properties.getAll();
+        let properties = await SafariStaysAPI.properties.getAll();
+        
+        // Remove duplicates by ID
+        const uniqueProperties = [];
+        const seenIds = new Set();
+        properties.forEach(property => {
+          if (!seenIds.has(property.id)) {
+            seenIds.add(property.id);
+            uniqueProperties.push(property);
+          }
+        });
+        properties = uniqueProperties;
+        
         // Use API properties if available, otherwise use fallback
         const displayProperties = properties.length > 0 ? properties.slice(0, 6) : originalProperties;
         
@@ -204,7 +216,7 @@
           
           return `
             <div class="card">
-              <img src="${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;">
+              <img src="/${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;" onerror="this.src='/images/lodge.jpg'; this.onerror=null;">
               <div class="p-4">
                 <div class="flex items-center justify-between mb-2">
                   <h4 class="font-bold text-lg">${property.name}</h4>

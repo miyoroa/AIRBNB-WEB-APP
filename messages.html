@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages - Safari Stays</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-bg-light">
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
+                <h1 class="text-2xl font-bold text-[var(--secondary-color)]">Safari Stays</h1>
+                
+                <nav class="hidden lg:flex w-full lg:w-auto">
+                    <ul class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-3 w-full lg:w-auto">
+                        <li class="flex lg:contents">
+                            <a href="index.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Home</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="search.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Search</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="booking.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">My Bookings</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="wishlist.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Wishlist</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="become-host.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Become a Host</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="messages.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap bg-[var(--primary-color)] text-white">Messages</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="profile.html" class="btn-secondary text-center py-2 px-4 whitespace-nowrap">Profile</a>
+                        </li>
+                        <li class="flex lg:contents">
+                            <a href="login.html" class="btn-primary text-center py-2 px-4 whitespace-nowrap">Login / Sign Up</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto my-8 p-4">
+        <h2 class="text-3xl font-bold mb-6">Messages</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Conversations List -->
+            <div class="lg:col-span-1">
+                <div class="card p-4">
+                    <h3 class="font-bold mb-4">Conversations</h3>
+                    <div id="conversations-list" class="space-y-2">
+                        <!-- Conversations will be loaded here -->
+                    </div>
+                    <div id="no-conversations" class="hidden text-center py-8 text-gray-500">
+                        <p>No messages yet</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Message Thread -->
+            <div class="lg:col-span-2">
+                <div class="card p-6">
+                    <div id="no-message-selected" class="text-center py-12 text-gray-500">
+                        <p class="text-lg mb-2">Select a conversation to view messages</p>
+                        <p class="text-sm">Or start a new conversation with a host</p>
+                    </div>
+                    
+                    <div id="message-thread" class="hidden">
+                        <div class="flex items-center justify-between mb-4 pb-4 border-b">
+                            <div>
+                                <h3 id="thread-title" class="font-bold text-lg"></h3>
+                                <p id="thread-subtitle" class="text-sm text-gray-600"></p>
+                            </div>
+                        </div>
+                        
+                        <div id="messages-container" class="space-y-4 mb-4" style="max-height: 400px; overflow-y: auto;">
+                            <!-- Messages will be displayed here -->
+                        </div>
+                        
+                        <form id="send-message-form" class="flex gap-2">
+                            <input type="text" id="message-input" class="border rounded flex-1 p-2" placeholder="Type a message..." required>
+                            <button type="submit" class="btn-primary">Send</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-brown text-white p-6 text-center mt-8">
+        <p class="font-bold text-lg">Safari Stays</p>
+        <p>Experience authentic African safari accommodations</p>
+        <p>&copy; 2025 Safari Stays. All rights reserved.</p>
+    </footer>
+
+    <script src="api.js"></script>
+    <script>
+        let conversations = [];
+        let currentConversationId = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConversations();
+            
+            // Check if coming from property page to start conversation
+            const messageHost = sessionStorage.getItem('messageHost');
+            if (messageHost) {
+                const data = JSON.parse(messageHost);
+                startConversation(data.hostName, data.propertyName, data.propertyId);
+                sessionStorage.removeItem('messageHost');
+            }
+            
+            const form = document.getElementById('send-message-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    sendMessage();
+                });
+            }
+        });
+
+        function loadConversations() {
+            // Load conversations from localStorage
+            conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+            
+            const list = document.getElementById('conversations-list');
+            const noConversations = document.getElementById('no-conversations');
+            
+            if (conversations.length === 0) {
+                list.classList.add('hidden');
+                noConversations.classList.remove('hidden');
+            } else {
+                list.classList.remove('hidden');
+                noConversations.classList.add('hidden');
+                
+                list.innerHTML = conversations.map(conv => {
+                    const lastMessage = conv.messages[conv.messages.length - 1];
+                    return `
+                        <div onclick="openConversation('${conv.id}')" class="p-3 border rounded cursor-pointer hover:bg-gray-50 ${currentConversationId === conv.id ? 'bg-gray-100' : ''}">
+                            <div class="font-semibold">${conv.with}</div>
+                            <div class="text-sm text-gray-600 truncate">${lastMessage?.text || 'No messages'}</div>
+                            <div class="text-xs text-gray-400 mt-1">${lastMessage ? new Date(lastMessage.timestamp).toLocaleDateString() : ''}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+
+        function openConversation(conversationId) {
+            currentConversationId = conversationId;
+            const conversation = conversations.find(c => c.id === conversationId);
+            
+            if (!conversation) return;
+            
+            document.getElementById('no-message-selected').classList.add('hidden');
+            document.getElementById('message-thread').classList.remove('hidden');
+            document.getElementById('thread-title').textContent = conversation.with;
+            document.getElementById('thread-subtitle').textContent = conversation.propertyName || '';
+            
+            const container = document.getElementById('messages-container');
+            container.innerHTML = conversation.messages.map(msg => `
+                <div class="flex ${msg.sent ? 'justify-end' : 'justify-start'}">
+                    <div class="max-w-xs p-3 rounded-lg ${msg.sent ? 'bg-[var(--primary-color)] text-white' : 'bg-gray-200'}">
+                        <p>${msg.text}</p>
+                        <p class="text-xs mt-1 ${msg.sent ? 'text-white opacity-75' : 'text-gray-500'}">${new Date(msg.timestamp).toLocaleString()}</p>
+                    </div>
+                </div>
+            `).join('');
+            
+            container.scrollTop = container.scrollHeight;
+            loadConversations();
+        }
+
+        function sendMessage() {
+            if (!currentConversationId) return;
+            
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+            
+            if (!text) return;
+            
+            const conversation = conversations.find(c => c.id === currentConversationId);
+            if (conversation) {
+                conversation.messages.push({
+                    text: text,
+                    sent: true,
+                    timestamp: new Date().toISOString()
+                });
+                
+                localStorage.setItem('conversations', JSON.stringify(conversations));
+                input.value = '';
+                openConversation(currentConversationId);
+            }
+        }
+
+        // Function to start a new conversation (can be called from property pages)
+        window.startConversation = function(hostName, propertyName, propertyId) {
+            const conversationId = `conv_${Date.now()}`;
+            const newConversation = {
+                id: conversationId,
+                with: hostName,
+                propertyName: propertyName,
+                propertyId: propertyId,
+                messages: []
+            };
+            
+            conversations.push(newConversation);
+            localStorage.setItem('conversations', JSON.stringify(conversations));
+            loadConversations();
+            openConversation(conversationId);
+        };
+    </script>
+</body>
+</html>
+

@@ -165,6 +165,12 @@ const bookingsAPI = {
             method: 'POST',
             body: JSON.stringify(bookingData)
         });
+    },
+
+    async delete(id) {
+        return await apiRequest(`/bookings/${id}`, {
+            method: 'DELETE'
+        });
     }
 };
 

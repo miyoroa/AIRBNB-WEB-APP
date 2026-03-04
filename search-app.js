@@ -19,6 +19,21 @@ document.addEventListener('DOMContentLoaded', async function() {
             allProperties = await SafariStaysAPI.properties.getAll();
             console.log(`Loaded ${allProperties.length} properties from API`);
             
+            // Remove duplicates by ID
+            const uniqueProperties = [];
+            const seenIds = new Set();
+            allProperties.forEach(property => {
+                if (!seenIds.has(property.id)) {
+                    seenIds.add(property.id);
+                    uniqueProperties.push(property);
+                }
+            });
+            allProperties = uniqueProperties;
+            console.log(`After removing duplicates: ${allProperties.length} unique properties`);
+            
+            // Populate property type dropdown dynamically
+            populatePropertyTypes();
+            
             // Verify all locations have properties
             const uniqueLocations = [...new Set(allProperties.map(p => p.location))];
             console.log(`Properties available in ${uniqueLocations.length} locations`);
@@ -47,21 +62,54 @@ document.addEventListener('DOMContentLoaded', async function() {
             alert('Error loading properties. Please make sure the server is running on http://localhost:3000');
             // Fallback to static data if API fails (African properties)
             allProperties = [
-                { id: 1, name: 'Luxury Safari Lodge', location: 'Serengeti, Tanzania', price: 450, type: 'Luxury Lodge', rating: 4.8, image: 'lodge.jpg', hostName: 'Safari Adventures Co.', description: 'Premium lodge with world-class amenities and stunning Serengeti views' },
-                { id: 3, name: 'Wilderness Tree Camp', location: 'Kruger National Park, South Africa', price: 320, type: 'Tree Camp', rating: 4.5, image: 'tree.jpg', hostName: 'Wilderness Escapes', description: 'Unique elevated camp offering authentic wilderness experience' },
-                { id: 5, name: 'Mountain View Lodge', location: 'Masai Mara, Kenya', price: 410, type: 'Luxury Lodge', rating: 4.7, image: 'mountainView.jpg', hostName: 'Mountain Retreats', description: 'Elegant lodge with panoramic mountain and savanna views' },
-                { id: 7, name: 'Riverside Safari Camp', location: 'Okavango Delta, Botswana', price: 380, type: 'Luxury Lodge', rating: 4.9, image: 'delta.jpg', hostName: 'Delta Experiences', description: 'Waterfront camp with unique water-based safari activities' },
-                { id: 9, name: 'Desert Safari Villa', location: 'Namib Desert, Namibia', price: 280, type: 'Desert Villa', rating: 4.2, image: 'villa.jpg', hostName: 'Desert Dreams', description: 'Modern villa with panoramic desert views and luxury amenities' },
-                { id: 11, name: 'Cape Town Waterfront Apartment', location: 'Cape Town, South Africa', price: 150, type: 'Apartment', rating: 4.8, image: 'lodge.jpg', hostName: 'Cape Town Stays', description: 'Modern apartment in vibrant waterfront area with Table Mountain views' },
-                { id: 13, name: 'Ngorongoro Crater Lodge', location: 'Ngorongoro Crater, Tanzania', price: 520, type: 'Luxury Lodge', rating: 4.9, image: 'mountainView.jpg', hostName: 'Crater Experiences', description: 'Luxury lodge on the rim of Ngorongoro Crater with breathtaking views' }
+                { id: 1, name: 'Luxury Safari Lodge', location: 'Serengeti, Tanzania', price: 450, type: 'Luxury Lodge', rating: 4.8, image: 'images/lodge.jpg', hostName: 'Safari Adventures Co.', description: 'Premium lodge with world-class amenities and stunning Serengeti views' },
+                { id: 3, name: 'Wilderness Tree Camp', location: 'Kruger National Park, South Africa', price: 320, type: 'Tree Camp', rating: 4.5, image: 'images/tree.jpg', hostName: 'Wilderness Escapes', description: 'Unique elevated camp offering authentic wilderness experience' },
+                { id: 5, name: 'Mountain View Lodge', location: 'Masai Mara, Kenya', price: 410, type: 'Luxury Lodge', rating: 4.7, image: 'images/mountainView.jpg', hostName: 'Mountain Retreats', description: 'Elegant lodge with panoramic mountain and savanna views' },
+                { id: 7, name: 'Riverside Safari Camp', location: 'Okavango Delta, Botswana', price: 380, type: 'Luxury Lodge', rating: 4.9, image: 'images/delta.jpg', hostName: 'Delta Experiences', description: 'Waterfront camp with unique water-based safari activities' },
+                { id: 9, name: 'Desert Safari Villa', location: 'Namib Desert, Namibia', price: 280, type: 'Desert Villa', rating: 4.2, image: 'images/villa.jpg', hostName: 'Desert Dreams', description: 'Modern villa with panoramic desert views and luxury amenities' },
+                { id: 11, name: 'Cape Town Waterfront Apartment', location: 'Cape Town, South Africa', price: 150, type: 'Apartment', rating: 4.8, image: 'images/lodge.jpg', hostName: 'Cape Town Stays', description: 'Modern apartment in vibrant waterfront area with Table Mountain views' },
+                { id: 13, name: 'Ngorongoro Crater Lodge', location: 'Ngorongoro Crater, Tanzania', price: 520, type: 'Luxury Lodge', rating: 4.9, image: 'images/mountainView.jpg', hostName: 'Crater Experiences', description: 'Luxury lodge on the rim of Ngorongoro Crater with breathtaking views' }
             ];
+            populatePropertyTypes();
             renderProperties(allProperties);
         }
+    }
+    
+    // Populate property type dropdown with unique types from properties
+    function populatePropertyTypes() {
+        if (!propertyType) return;
+        
+        // Get unique property types from all properties
+        const uniqueTypes = [...new Set(allProperties.map(p => p.type).filter(Boolean))].sort();
+        
+        // Clear existing options except "All Types"
+        propertyType.innerHTML = '<option value="All Types">All Types</option>';
+        
+        // Add each unique type
+        uniqueTypes.forEach(type => {
+            const option = document.createElement('option');
+            option.value = type;
+            option.textContent = type;
+            propertyType.appendChild(option);
+        });
+        
+        console.log(`Populated property types: ${uniqueTypes.join(', ')}`);
     }
 
     // Render properties with full details
     function renderProperties(properties) {
         if (!propertiesContainer) return;
+        
+        // Remove duplicates by ID before rendering (final safety check)
+        const uniqueProperties = [];
+        const seenIds = new Set();
+        properties.forEach(property => {
+            if (!seenIds.has(property.id)) {
+                seenIds.add(property.id);
+                uniqueProperties.push(property);
+            }
+        });
+        properties = uniqueProperties;
         
         if (properties.length === 0) {
             propertiesContainer.classList.add('hidden');
@@ -101,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             
             return `
                 <div class="card">
-                    <img src="${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;" />
+                    <img src="/${property.image}" alt="${property.name}" style="height: 250px; object-fit: cover;" onerror="this.src='/images/lodge.jpg'; this.onerror=null;" />
                     <div class="p-4">
                         <div class="flex items-center justify-between mb-2">
                             <h4 class="font-bold text-lg">${property.name}</h4>
@@ -144,8 +192,21 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (selectedType !== 'All Types') filters.type = selectedType;
 
             console.log('Sending filters:', filters);
-            const filtered = await SafariStaysAPI.properties.getAll(filters);
+            let filtered = await SafariStaysAPI.properties.getAll(filters);
             console.log('Received properties:', filtered.length);
+            
+            // Remove duplicates by ID to ensure no property appears twice
+            const uniqueFiltered = [];
+            const seenIds = new Set();
+            filtered.forEach(property => {
+                if (!seenIds.has(property.id)) {
+                    seenIds.add(property.id);
+                    uniqueFiltered.push(property);
+                }
+            });
+            filtered = uniqueFiltered;
+            console.log(`After removing duplicates: ${filtered.length} unique properties`);
+            
             renderProperties(filtered);
         } catch (error) {
             console.error('Error filtering properties:', error);
@@ -178,6 +239,19 @@ document.addEventListener('DOMContentLoaded', async function() {
                 
                 return matchesPrice && matchesType && matchesRating && matchesLocation;
             });
+            
+            // Remove duplicates by ID to ensure no property appears twice
+            const uniqueFiltered = [];
+            const seenIds = new Set();
+            filtered.forEach(property => {
+                if (!seenIds.has(property.id)) {
+                    seenIds.add(property.id);
+                    uniqueFiltered.push(property);
+                }
+            });
+            filtered = uniqueFiltered;
+            
+            console.log(`Filtered ${filtered.length} unique properties`);
             renderProperties(filtered);
         }
     }
