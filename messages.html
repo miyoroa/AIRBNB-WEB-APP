@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-bg-light">
+<body class="bg-bg-light min-h-screen flex flex-col">
     <header class="bg-white shadow sticky top-0 z-50">
         <div class="container mx-auto px-4">
             <div class="flex flex-col lg:flex-row justify-between items-center py-4 gap-4">
@@ -45,7 +45,7 @@
         </div>
     </header>
 
-    <main class="container mx-auto my-8 p-4">
+    <main class="container mx-auto my-8 p-4 flex-1">
         <h2 class="text-3xl font-bold mb-6">Messages</h2>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -59,6 +59,21 @@
                     <div id="no-conversations" class="hidden text-center py-8 text-gray-500">
                         <p>No messages yet</p>
                     </div>
+                </div>
+
+                <div class="card p-4 mt-4">
+                    <h3 class="font-bold mb-3">Start a conversation</h3>
+                    <form id="new-conversation-form" class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Host name</label>
+                            <input id="new-conv-host" type="text" class="border rounded w-full p-2" placeholder="e.g. Safari Lodge Host" required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-1">Property (optional)</label>
+                            <input id="new-conv-property" type="text" class="border rounded w-full p-2" placeholder="e.g. Serengeti Luxury Lodge" />
+                        </div>
+                        <button type="submit" class="btn-primary w-full">Start</button>
+                    </form>
                 </div>
             </div>
             
@@ -92,7 +107,7 @@
         </div>
     </main>
 
-    <footer class="bg-brown text-white p-6 text-center mt-8">
+    <footer class="bg-brown text-white p-6 text-center mt-12">
         <p class="font-bold text-lg">Safari Stays</p>
         <p>Experience authentic African safari accommodations</p>
         <p>&copy; 2025 Safari Stays. All rights reserved.</p>
@@ -121,11 +136,28 @@
                     sendMessage();
                 });
             }
+
+            const newConvForm = document.getElementById('new-conversation-form');
+            if (newConvForm) {
+                newConvForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const hostName = document.getElementById('new-conv-host')?.value?.trim();
+                    const propertyName = document.getElementById('new-conv-property')?.value?.trim();
+                    if (!hostName) return;
+                    startConversation(hostName, propertyName || '', '');
+                    newConvForm.reset();
+                });
+            }
         });
 
         function loadConversations() {
             // Load conversations from localStorage
             conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+            // Normalize shape (older data might be missing fields)
+            conversations = conversations.map(c => ({
+                ...c,
+                messages: Array.isArray(c.messages) ? c.messages : [],
+            }));
             
             const list = document.getElementById('conversations-list');
             const noConversations = document.getElementById('no-conversations');
@@ -138,7 +170,7 @@
                 noConversations.classList.add('hidden');
                 
                 list.innerHTML = conversations.map(conv => {
-                    const lastMessage = conv.messages[conv.messages.length - 1];
+                    const lastMessage = conv.messages?.[conv.messages.length - 1];
                     return `
                         <div onclick="openConversation('${conv.id}')" class="p-3 border rounded cursor-pointer hover:bg-gray-50 ${currentConversationId === conv.id ? 'bg-gray-100' : ''}">
                             <div class="font-semibold">${conv.with}</div>
@@ -199,12 +231,29 @@
 
         // Function to start a new conversation (can be called from property pages)
         window.startConversation = function(hostName, propertyName, propertyId) {
+            const normalizedHost = (hostName || '').trim();
+            const normalizedPropertyId = (propertyId || '').trim();
+            const normalizedPropertyName = (propertyName || '').trim();
+
+            // Reuse existing conversation if it already exists
+            const existing = conversations.find(c =>
+                (c.with || '').trim() === normalizedHost &&
+                ((c.propertyId || '').trim() === normalizedPropertyId) &&
+                ((c.propertyName || '').trim() === normalizedPropertyName)
+            );
+
+            if (existing) {
+                loadConversations();
+                openConversation(existing.id);
+                return;
+            }
+
             const conversationId = `conv_${Date.now()}`;
             const newConversation = {
                 id: conversationId,
-                with: hostName,
-                propertyName: propertyName,
-                propertyId: propertyId,
+                with: normalizedHost,
+                propertyName: normalizedPropertyName,
+                propertyId: normalizedPropertyId,
                 messages: []
             };
             
