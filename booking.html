@@ -222,6 +222,39 @@
         </div>
     </div>
 
+    <!-- Edit Booking Modal (bookers) -->
+    <div id="edit-booking-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Edit booking</h2>
+                    <button type="button" id="close-edit-booking-modal" class="text-gray-500 hover:text-gray-700 text-2xl leading-none">&times;</button>
+                </div>
+                <p id="edit-booking-property-name" class="font-semibold text-[var(--secondary-color)] mb-4"></p>
+                <form id="edit-booking-form" class="space-y-4">
+                    <input type="hidden" id="edit-booking-id">
+                    <div>
+                        <label class="block text-sm font-medium mb-1" for="edit-booking-checkin">Check-in</label>
+                        <input type="date" id="edit-booking-checkin" class="border rounded w-full p-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1" for="edit-booking-checkout">Check-out</label>
+                        <input type="date" id="edit-booking-checkout" class="border rounded w-full p-2" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1" for="edit-booking-guests">Guests</label>
+                        <input type="number" id="edit-booking-guests" class="border rounded w-full p-2" min="1" required>
+                        <p id="edit-booking-max-guests-hint" class="text-xs text-gray-500 mt-1"></p>
+                    </div>
+                    <div class="flex gap-3 pt-2">
+                        <button type="submit" class="btn-primary flex-1">Save changes</button>
+                        <button type="button" id="cancel-edit-booking" class="btn-secondary flex-1">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-brown text-white p-6 text-center">
         <p class="font-bold text-lg">Safari Stays</p>
         <p>Experience authentic African safari accommodations</p>

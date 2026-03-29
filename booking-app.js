@@ -268,6 +268,11 @@ function displayBookings(bookings, containerId) {
     const bookingList = document.getElementById(containerId);
     if (!bookingList) return;
 
+    window._bookingsById = {};
+    bookings.forEach(b => {
+        window._bookingsById[b.id] = b;
+    });
+
     bookingList.innerHTML = bookings.map(booking => {
         const propertyName = booking.property?.name || 'Unknown Property';
         const propertyLocation = booking.property?.location || '';
@@ -276,11 +281,10 @@ function displayBookings(bookings, containerId) {
         const total = booking.total || 0;
         const status = booking.status || 'Confirmed';
         
-        // Add a cancel button for bookers
         const user = SafariStaysAPI.getCurrentUser();
         let actionButton = '';
         if (user && user.role === 'booker') {
-            actionButton = `<button class="btn-danger mt-2" onclick="cancelBooking(${booking.id})">Cancel Booking</button>`;
+            actionButton = `<button type="button" class="btn-secondary mt-2 edit-booking-btn" data-booking-id="${booking.id}">Edit booking</button>`;
         }
 
         return `
@@ -301,22 +305,82 @@ function displayBookings(bookings, containerId) {
             </div>
         `;
     }).join('');
+
+    bookingList.querySelectorAll('.edit-booking-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = parseInt(this.getAttribute('data-booking-id'), 10);
+            openEditBookingModal(id);
+        });
+    });
 }
 
-// Function to cancel a booking (for bookers)
-async function cancelBooking(bookingId) {
-    if (!confirm('Are you sure you want to cancel this booking?')) {
-        return;
+function openEditBookingModal(bookingId) {
+    const booking = window._bookingsById && window._bookingsById[bookingId];
+    if (!booking) return;
+
+    const modal = document.getElementById('edit-booking-modal');
+    if (!modal) return;
+
+    const cin = booking.checkIn || booking.checkin;
+    const cout = booking.checkOut || booking.checkout;
+
+    document.getElementById('edit-booking-id').value = booking.id;
+    document.getElementById('edit-booking-property-name').textContent = booking.property?.name || 'Booking';
+    document.getElementById('edit-booking-checkin').value = cin ? String(cin).slice(0, 10) : '';
+    document.getElementById('edit-booking-checkout').value = cout ? String(cout).slice(0, 10) : '';
+
+    const guestsInput = document.getElementById('edit-booking-guests');
+    const maxG = booking.property?.maxGuests;
+    guestsInput.value = booking.guests || 1;
+    if (maxG != null) {
+        guestsInput.max = maxG;
+        document.getElementById('edit-booking-max-guests-hint').textContent = `Maximum guests for this property: ${maxG}`;
+    } else {
+        guestsInput.removeAttribute('max');
+        document.getElementById('edit-booking-max-guests-hint').textContent = '';
     }
 
-    try {
-        await SafariStaysAPI.bookings.delete(bookingId);
-        alert('Booking cancelled successfully.');
-        // Reload the page or just the booking list
-        window.location.reload();
-    } catch (error) {
-        console.error('Error cancelling booking:', error);
-        alert('Failed to cancel booking: ' + (error.message || 'Please try again.'));
-    }
+    modal.classList.remove('hidden');
 }
+
+function closeEditBookingModal() {
+    const modal = document.getElementById('edit-booking-modal');
+    if (modal) modal.classList.add('hidden');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const editForm = document.getElementById('edit-booking-form');
+    const closeBtn = document.getElementById('close-edit-booking-modal');
+    const cancelBtn = document.getElementById('cancel-edit-booking');
+    const modal = document.getElementById('edit-booking-modal');
+
+    if (editForm) {
+        editForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('edit-booking-id').value, 10);
+            const checkIn = document.getElementById('edit-booking-checkin').value;
+            const checkOut = document.getElementById('edit-booking-checkout').value;
+            const guests = parseInt(document.getElementById('edit-booking-guests').value, 10);
+
+            if (!checkIn || !checkOut || isNaN(guests)) return;
+
+            try {
+                await SafariStaysAPI.bookings.update(id, { checkIn, checkOut, guests });
+                closeEditBookingModal();
+                window.location.reload();
+            } catch (error) {
+                console.error('Error updating booking:', error);
+                alert(error.message || 'Failed to update booking.');
+            }
+        });
+    }
+
+    if (closeBtn) closeBtn.addEventListener('click', closeEditBookingModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeEditBookingModal);
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeEditBookingModal();
+        });
+    }
+});
 

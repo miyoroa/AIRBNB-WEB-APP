@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
 const path = require('path');
+const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -859,6 +860,119 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
+// Request password reset (demo: returns a reset link when the account exists; production would email it)
+app.post('/api/auth/request-password-reset', async (req, res) => {
+    try {
+        const { email, role } = req.body;
+        if (!email || !role) {
+            return res.status(400).json({ error: 'Email and account type are required' });
+        }
+
+        const users = await readData(USERS_FILE);
+        const user = users.find(u => u.email === email && u.role === role);
+
+        const genericMessage =
+            'If an account exists for this email and account type, you can use the reset option below.';
+
+        if (!user) {
+            return res.json({ message: genericMessage, resetUrl: null });
+        }
+
+        const token = crypto.randomBytes(32).toString('hex');
+        const expires = Date.now() + 60 * 60 * 1000; // 1 hour
+
+        const idx = users.findIndex(u => u.id === user.id);
+        users[idx].passwordResetToken = token;
+        users[idx].passwordResetExpires = expires;
+        await writeData(USERS_FILE, users);
+
+        const resetUrl = `reset-password.html?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
+
+        res.json({
+            message:
+                'Use the link below to set a new password. (In production this link would be sent by email.)',
+            resetUrl
+        });
+    } catch (error) {
+        console.error('Request password reset error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Complete password reset with token from email (or demo link)
+app.post('/api/auth/reset-password', async (req, res) => {
+    try {
+        const { email, token, newPassword } = req.body;
+
+        if (!email || !token || !newPassword) {
+            return res.status(400).json({ error: 'Email, token, and new password are required' });
+        }
+        if (newPassword.length < 8) {
+            return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+        }
+
+        const users = await readData(USERS_FILE);
+        const idx = users.findIndex(u => u.email === email);
+
+        if (idx === -1) {
+            return res.status(400).json({ error: 'Invalid or expired reset link' });
+        }
+
+        const user = users[idx];
+        if (!user.passwordResetToken || user.passwordResetToken !== token) {
+            return res.status(400).json({ error: 'Invalid or expired reset link' });
+        }
+        if (!user.passwordResetExpires || Date.now() > user.passwordResetExpires) {
+            return res.status(400).json({ error: 'Reset link has expired. Request a new one.' });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        delete user.passwordResetToken;
+        delete user.passwordResetExpires;
+
+        await writeData(USERS_FILE, users);
+        res.json({ message: 'Password updated successfully. You can log in now.' });
+    } catch (error) {
+        console.error('Reset password error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Change password while logged in
+app.put('/api/auth/change-password', authenticateToken, async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ error: 'Current password and new password are required' });
+        }
+        if (newPassword.length < 8) {
+            return res.status(400).json({ error: 'New password must be at least 8 characters long' });
+        }
+
+        const users = await readData(USERS_FILE);
+        const idx = users.findIndex(u => u.id === req.user.id);
+
+        if (idx === -1) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const user = users[idx];
+        const valid = await bcrypt.compare(currentPassword, user.password);
+        if (!valid) {
+            return res.status(401).json({ error: 'Current password is incorrect' });
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        await writeData(USERS_FILE, users);
+
+        res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error('Change password error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 // ==================== PROPERTY ROUTES ====================
 
 // Get all properties
@@ -1181,6 +1295,78 @@ app.post('/api/bookings', authenticateToken, async (req, res) => {
         res.status(201).json({ ...newBooking, property });
     } catch (error) {
         console.error('Create booking error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Update a booking (Booker only) — dates and guest count; total recalculated from property price
+app.put('/api/bookings/:id', authenticateToken, async (req, res) => {
+    try {
+        if (req.user.role !== 'booker') {
+            return res.status(403).json({ error: 'Only bookers can update bookings' });
+        }
+
+        const bookingId = parseInt(req.params.id, 10);
+        const { checkIn, checkOut, guests } = req.body;
+
+        if (!checkIn || !checkOut || guests === undefined || guests === null || guests === '') {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const bookings = await readData(BOOKINGS_FILE);
+        const bookingIndex = bookings.findIndex(b => b.id === bookingId);
+
+        if (bookingIndex === -1) {
+            return res.status(404).json({ error: 'Booking not found' });
+        }
+
+        if (bookings[bookingIndex].userId !== req.user.id) {
+            return res.status(403).json({ error: 'You are not authorized to update this booking' });
+        }
+
+        const properties = await readData(PROPERTIES_FILE);
+        const property = properties.find(p => p.id === bookings[bookingIndex].propertyId);
+
+        if (!property) {
+            return res.status(404).json({ error: 'Property not found' });
+        }
+
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        if (isNaN(checkInDate.getTime()) || isNaN(checkOutDate.getTime())) {
+            return res.status(400).json({ error: 'Invalid dates' });
+        }
+        if (checkOutDate <= checkInDate) {
+            return res.status(400).json({ error: 'Check-out must be after check-in' });
+        }
+
+        const guestNum = parseInt(guests, 10);
+        const maxG = property.maxGuests != null ? property.maxGuests : 999;
+        if (isNaN(guestNum) || guestNum < 1 || guestNum > maxG) {
+            return res.status(400).json({ error: `Guests must be between 1 and ${maxG}` });
+        }
+
+        const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+        const subtotal = nights * property.price;
+        const serviceFee = Math.round(subtotal * 0.12);
+        const total = subtotal + serviceFee;
+
+        bookings[bookingIndex] = {
+            ...bookings[bookingIndex],
+            checkIn,
+            checkOut,
+            guests: guestNum,
+            nights,
+            subtotal,
+            serviceFee,
+            total
+        };
+
+        await writeData(BOOKINGS_FILE, bookings);
+
+        res.json({ ...bookings[bookingIndex], property });
+    } catch (error) {
+        console.error('Update booking error:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

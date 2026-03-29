@@ -35,27 +35,35 @@
         </div>
 
         <!-- Booker Login Form -->
-        <form id="bookerForm" class="space-y-4">
+        <form id="bookerForm" class="space-y-4" novalidate>
+            <div id="booker-login-error" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2" role="alert"></div>
             <div>
                 <label class="block text-sm font-medium">Email</label>
-                <input type="email" placeholder="you@example.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+                <input type="email" name="email" placeholder="you@example.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required autocomplete="email">
             </div>
             <div>
-                <label class="block text-sm font-medium">Password</label>
-                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-sm font-medium">Password</label>
+                    <a href="forgot-password.html?role=booker" class="text-xs text-[var(--primary-color)] hover:underline">Forgot password?</a>
+                </div>
+                <input type="password" name="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn-primary w-full">Login as Guest</button>
         </form>
 
         <!-- Host Login Form -->
-        <form id="hostForm" class="space-y-4 hidden">
+        <form id="hostForm" class="space-y-4 hidden" novalidate>
+            <div id="host-login-error" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2" role="alert"></div>
             <div>
                 <label class="block text-sm font-medium">Host Email</label>
-                <input type="email" placeholder="host@safaristays.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+                <input type="email" name="email" placeholder="host@safaristays.com" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required autocomplete="email">
             </div>
             <div>
-                <label class="block text-sm font-medium">Password</label>
-                <input type="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required>
+                <div class="flex justify-between items-center mb-1">
+                    <label class="block text-sm font-medium">Password</label>
+                    <a href="forgot-password.html?role=host" class="text-xs text-[var(--primary-color)] hover:underline">Forgot password?</a>
+                </div>
+                <input type="password" name="password" placeholder="••••••••" class="border rounded w-full p-2 focus:ring focus:ring-[var(--accent-color)]" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn-primary w-full">Login as Host</button>
         </form>
@@ -73,17 +81,27 @@
 
     <script src="api.js"></script>
     <script>
+        function showLoginError(formId, message) {
+            const id = formId === 'bookerForm' ? 'booker-login-error' : 'host-login-error';
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.classList.remove('hidden');
+        }
+
+        function clearLoginErrors() {
+            document.getElementById('booker-login-error').classList.add('hidden');
+            document.getElementById('host-login-error').classList.add('hidden');
+        }
+
         // Check server connection on page load
         document.addEventListener('DOMContentLoaded', async function() {
             try {
-                // Try to ping the server
                 const response = await fetch('http://localhost:3000/api/properties');
                 if (!response.ok && response.status !== 404) {
                     console.warn('Server connection issue detected');
                 }
             } catch (error) {
                 console.error('Cannot connect to server:', error);
-                // Show a helpful message if server is not running
                 const loginContainer = document.querySelector('.login-container');
                 if (loginContainer) {
                     const warningDiv = document.createElement('div');
@@ -101,6 +119,8 @@
             const bookerForm = document.getElementById('bookerForm');
             const hostForm = document.getElementById('hostForm');
 
+            clearLoginErrors();
+
             if (role === 'booker') {
                 bookerTab.classList.add('tab-active');
                 hostTab.classList.remove('tab-active');
@@ -116,76 +136,76 @@
 
         document.getElementById('bookerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            clearLoginErrors();
             const form = this;
             const emailInput = form.querySelector('input[type="email"]');
             const passwordInput = form.querySelector('input[type="password"]');
             const email = emailInput.value.trim();
             const password = passwordInput.value;
             const submitButton = form.querySelector('button[type="submit"]');
-            
-            // Basic validation
+
             if (!email || !password) {
-                alert('Please enter both email and password');
+                showLoginError('bookerForm', 'Please enter both email and password.');
                 return;
             }
-            
-            // Disable button during request
+
             submitButton.disabled = true;
             submitButton.textContent = 'Logging in...';
-            
+
             try {
                 const result = await SafariStaysAPI.auth.login(email, password, 'booker');
                 if (result && result.token) {
-                    alert('Login successful! Welcome back!');
                     window.location.href = 'index.html';
                 } else {
-                    throw new Error('Login failed: No token received');
+                    throw new Error('No token received');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                const errorMessage = error.message || 'Invalid email or password. Please try again.';
-                alert('Login failed: ' + errorMessage);
+                let msg = error.message || 'Invalid email or password. Please try again.';
+                if (msg.startsWith('Login failed:')) {
+                    msg = msg.replace(/^Login failed:\s*/i, '').trim();
+                }
+                showLoginError('bookerForm', msg);
                 submitButton.disabled = false;
                 submitButton.textContent = 'Login as Guest';
-                // Clear password field for security
                 passwordInput.value = '';
             }
         });
 
         document.getElementById('hostForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            clearLoginErrors();
             const form = this;
             const emailInput = form.querySelector('input[type="email"]');
             const passwordInput = form.querySelector('input[type="password"]');
             const email = emailInput.value.trim();
             const password = passwordInput.value;
             const submitButton = form.querySelector('button[type="submit"]');
-            
-            // Basic validation
+
             if (!email || !password) {
-                alert('Please enter both email and password');
+                showLoginError('hostForm', 'Please enter both email and password.');
                 return;
             }
-            
-            // Disable button during request
+
             submitButton.disabled = true;
             submitButton.textContent = 'Logging in...';
-            
+
             try {
                 const result = await SafariStaysAPI.auth.login(email, password, 'host');
                 if (result && result.token) {
-                    alert('Login successful! Welcome back!');
                     window.location.href = 'booking.html';
                 } else {
-                    throw new Error('Login failed: No token received');
+                    throw new Error('No token received');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                const errorMessage = error.message || 'Invalid email or password. Please try again.';
-                alert('Login failed: ' + errorMessage);
+                let msg = error.message || 'Invalid email or password. Please try again.';
+                if (msg.startsWith('Login failed:')) {
+                    msg = msg.replace(/^Login failed:\s*/i, '').trim();
+                }
+                showLoginError('hostForm', msg);
                 submitButton.disabled = false;
                 submitButton.textContent = 'Login as Host';
-                // Clear password field for security
                 passwordInput.value = '';
             }
         });

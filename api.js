@@ -112,6 +112,27 @@ const authAPI = {
     
     isAuthenticated() {
         return !!getAuthToken();
+    },
+
+    async requestPasswordReset(email, role) {
+        return await apiRequest('/auth/request-password-reset', {
+            method: 'POST',
+            body: JSON.stringify({ email, role })
+        });
+    },
+
+    async resetPassword(email, token, newPassword) {
+        return await apiRequest('/auth/reset-password', {
+            method: 'POST',
+            body: JSON.stringify({ email, token, newPassword })
+        });
+    },
+
+    async changePassword(currentPassword, newPassword) {
+        return await apiRequest('/auth/change-password', {
+            method: 'PUT',
+            body: JSON.stringify({ currentPassword, newPassword })
+        });
     }
 };
 
@@ -163,6 +184,13 @@ const bookingsAPI = {
     async create(bookingData) {
         return await apiRequest('/bookings', {
             method: 'POST',
+            body: JSON.stringify(bookingData)
+        });
+    },
+
+    async update(id, bookingData) {
+        return await apiRequest(`/bookings/${id}`, {
+            method: 'PUT',
             body: JSON.stringify(bookingData)
         });
     },

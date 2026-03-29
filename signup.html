@@ -145,7 +145,6 @@
             
             try {
                 await SafariStaysAPI.auth.register({ name, email, password, role: 'booker' });
-                alert('Account created successfully! Redirecting to login...');
                 window.location.href = 'login.html';
             } catch (error) {
                 alert('Registration failed: ' + (error.message || 'An error occurred. Please try again.'));
@@ -192,7 +191,6 @@
                     role: 'host',
                     businessName 
                 });
-                alert('Host account created successfully! Redirecting to login...');
                 window.location.href = 'login.html';
             } catch (error) {
                 alert('Registration failed: ' + (error.message || 'An error occurred. Please try again.'));

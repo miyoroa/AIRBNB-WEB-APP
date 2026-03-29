@@ -113,6 +113,7 @@
                 <!-- Account Settings -->
                 <div class="card p-6">
                     <h3 class="text-xl font-bold mb-4">Account Settings</h3>
+                    <p id="profile-save-note" class="hidden mb-3 text-sm text-green-800 bg-green-50 border border-green-200 rounded px-3 py-2" role="status"></p>
                     <form id="profile-form" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium mb-2">Full Name</label>
@@ -131,6 +132,28 @@
                             <textarea id="profile-bio" class="border rounded w-full p-2" rows="3"></textarea>
                         </div>
                         <button type="submit" class="btn-primary">Save Changes</button>
+                    </form>
+                </div>
+
+                <!-- Change password (logged-in users) -->
+                <div class="card p-6 mt-6">
+                    <h3 class="text-xl font-bold mb-4">Change password</h3>
+                    <div id="password-change-error" class="hidden mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2" role="alert"></div>
+                    <div id="password-change-success" class="hidden mb-3 text-sm text-green-800 bg-green-50 border border-green-200 rounded px-3 py-2" role="status"></div>
+                    <form id="change-password-form" class="space-y-4 max-w-md">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Current password</label>
+                            <input type="password" id="current-password" class="border rounded w-full p-2" required autocomplete="current-password">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">New password</label>
+                            <input type="password" id="new-password" class="border rounded w-full p-2" required minlength="8" autocomplete="new-password" placeholder="At least 8 characters">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Confirm new password</label>
+                            <input type="password" id="confirm-new-password" class="border rounded w-full p-2" required minlength="8" autocomplete="new-password">
+                        </div>
+                        <button type="submit" class="btn-secondary">Update password</button>
                     </form>
                 </div>
             </div>
@@ -162,6 +185,37 @@
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
                     saveProfile();
+                });
+            }
+
+            const pwdForm = document.getElementById('change-password-form');
+            if (pwdForm) {
+                pwdForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const errEl = document.getElementById('password-change-error');
+                    const okEl = document.getElementById('password-change-success');
+                    errEl.classList.add('hidden');
+                    okEl.classList.add('hidden');
+
+                    const current = document.getElementById('current-password').value;
+                    const next = document.getElementById('new-password').value;
+                    const confirm = document.getElementById('confirm-new-password').value;
+
+                    if (next !== confirm) {
+                        errEl.textContent = 'New passwords do not match.';
+                        errEl.classList.remove('hidden');
+                        return;
+                    }
+
+                    try {
+                        await SafariStaysAPI.auth.changePassword(current, next);
+                        okEl.textContent = 'Password changed successfully.';
+                        okEl.classList.remove('hidden');
+                        pwdForm.reset();
+                    } catch (error) {
+                        errEl.textContent = error.message || 'Could not change password.';
+                        errEl.classList.remove('hidden');
+                    }
                 });
             }
         });
@@ -218,7 +272,12 @@
             };
             
             localStorage.setItem('userProfile', JSON.stringify(profileData));
-            alert('Profile updated successfully!');
+            const note = document.getElementById('profile-save-note');
+            if (note) {
+                note.textContent = 'Profile details saved.';
+                note.classList.remove('hidden');
+                setTimeout(function() { note.classList.add('hidden'); }, 4000);
+            }
         }
 
         function logout() {
